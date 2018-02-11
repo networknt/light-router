@@ -1,0 +1,11 @@
+---
+# Client Router Configuration
+
+# If HTTP 2.0 protocol will be used to connect to target servers
+http2Enabled: false
+
+# If TLS is enabled when connecting to the target servers
+httpsEnabled: false
+
+# Max request time in milliseconds before timeout
+maxRequestTime: 1000
