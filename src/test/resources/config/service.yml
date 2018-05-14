@@ -32,5 +32,7 @@ singletons:
   - com.networknt.traceability.TraceabilityHandler
   # Correlation Create correlationId if it doesn't exist in the request header and put it into the request header
   - com.networknt.correlation.CorrelationHandler
+  # Cors handler to handler post/put pre-flight
+  - com.networknt.cors.CorsHttpHandler
   # Header middleware to manipulate request and/or response headers before or after downstream server
   - com.networknt.header.HeaderHandler
