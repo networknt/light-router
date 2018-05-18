@@ -214,7 +214,7 @@ public class TokenHandler implements MiddlewareHandler {
 
     private void getCCToken() throws ClientException {
         TokenRequest tokenRequest = new ClientCredentialsRequest();
-        TokenResponse tokenResponse = OauthHelper.getToken(tokenRequest, oauthHttp2Support);
+        TokenResponse tokenResponse = OauthHelper.getToken(tokenRequest);
         synchronized (lock) {
             jwt = tokenResponse.getAccessToken();
             // the expiresIn is seconds and it is converted to millisecond in the future.
