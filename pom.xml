@@ -111,12 +111,7 @@
         </dependency>
         <dependency>
             <groupId>com.networknt</groupId>
-            <artifactId>auth</artifactId>
-            <version>${version.light-4j}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.networknt</groupId>
-            <artifactId>csrf</artifactId>
+            <artifactId>stateless-auth</artifactId>
             <version>${version.light-4j}</version>
         </dependency>
         <dependency>
