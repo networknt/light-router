@@ -34,6 +34,13 @@ public class RouterHandlerProvider implements HandlerProvider {
         // As we are building a client side router for the light platform, the assumption is the server will
         // be on HTTP 2.0 TSL always. No need to handle HTTP 1.1 case here.
         RouterProxyClient routerProxyClient = new RouterProxyClient();
-        return new ProxyHandler(routerProxyClient, config.getMaxRequestTime(), ResponseCodeHandler.HANDLE_404);
+        return ProxyHandler.builder()
+                .setProxyClient(routerProxyClient)
+                .setMaxConnectionRetries(config.maxConnectionRetries)
+                .setMaxRequestTime(config.maxRequestTime)
+                .setReuseXForwarded(config.reuseXForwarded)
+                .setRewriteHostHeader(config.rewriteHostHeader)
+                .setNext(ResponseCodeHandler.HANDLE_404)
+                .build();
     }
 }

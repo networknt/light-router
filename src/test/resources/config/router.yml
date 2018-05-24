@@ -11,3 +11,12 @@ httpsEnabled: false
 
 # Max request time in milliseconds before timeout to the server.
 maxRequestTime: 1000
+
+# Rewrite Host Header with the target host and port and write X_FORWARDED_HOST with original host
+rewriteHostHeader: true
+
+# Reuse XForwarded for the target XForwarded header
+reuseXForwarded: false
+
+# Max Connection Retries
+maxConnectionRetries: 3
