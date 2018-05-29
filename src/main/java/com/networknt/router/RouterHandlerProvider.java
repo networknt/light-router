@@ -26,8 +26,8 @@ import io.undertow.server.handlers.proxy.ProxyHandler;
  *
  */
 public class RouterHandlerProvider implements HandlerProvider {
-
-    static RouterConfig config = (RouterConfig)Config.getInstance().getJsonObjectConfig(Constants.CONFIG_NAME, RouterConfig.class);
+    static final String CONFIG_NAME = "router";
+    static RouterConfig config = (RouterConfig)Config.getInstance().getJsonObjectConfig(CONFIG_NAME, RouterConfig.class);
 
     @Override
     public HttpHandler getHandler() {

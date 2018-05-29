@@ -63,8 +63,7 @@ public class TokenHandler implements MiddlewareHandler {
     public static final String ENABLED = "enabled";
 
     public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
-    static Logger logger = LoggerFactory.getLogger(RouterProxyClient.class);
-
+    static Logger logger = LoggerFactory.getLogger(TokenHandler.class);
     private volatile HttpHandler next;
 
     private String jwt;    // the cached jwt token for client credentials grant type

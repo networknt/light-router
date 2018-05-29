@@ -121,8 +121,33 @@
         </dependency>
         <dependency>
             <groupId>com.networknt</groupId>
+            <artifactId>metrics</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
             <artifactId>server</artifactId>
             <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${version.json-schema-validator}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>openapi-parser</artifactId>
+            <version>${version.openapi-parser}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>openapi-meta</artifactId>
+            <version>${version.light-rest-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>openapi-validator</artifactId>
+            <version>${version.light-rest-4j}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

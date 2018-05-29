@@ -6,6 +6,7 @@ import com.networknt.common.SecretConstants;
 import com.networknt.config.Config;
 import com.networknt.exception.ClientException;
 import com.networknt.server.ServerConfig;
+import com.networknt.utility.Constants;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.client.ClientConnection;
@@ -35,7 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.networknt.client.Http2Client.createSSLContext;
 import static com.networknt.server.Server.TRUST_ALL_CERTS;
 
 public class RouterHttpTest {
@@ -143,7 +143,6 @@ public class RouterHttpTest {
 
     @Test
     public void testGet() throws Exception {
-        final HttpString serviceId = new HttpString(Constants.SERVICE_ID);
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
         final ClientConnection connection;
@@ -160,8 +159,8 @@ public class RouterHttpTest {
                     for (int i = 0; i < 10; i++) {
                         AtomicReference<ClientResponse> reference = new AtomicReference<>();
                         references.add(i, reference);
-                        final ClientRequest request = new ClientRequest().setMethod(Methods.GET).setPath("/");
-                        request.getRequestHeaders().put(serviceId, "com.networknt.test-1.0.0");
+                        final ClientRequest request = new ClientRequest().setMethod(Methods.GET).setPath("/v2/address");
+                        request.getRequestHeaders().put(Constants.SERVICE_ID, "com.networknt.test-1.0.0");
                         connection.sendRequest(request, client.createClientCallback(reference, latch));
                     }
                 }
