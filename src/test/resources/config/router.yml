@@ -1,5 +1,5 @@
 ---
-# Client Router Configuration
+# Light Router Configuration
 # As this router is built to support discovery and security for light-4j services,
 # the outbound connection is always HTTP 2.0 with TLS enabled.
 
