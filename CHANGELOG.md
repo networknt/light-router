@@ -1,5 +1,18 @@
 # Change Log
 
+## [1.5.15](https://github.com/networknt/light-router/tree/1.5.15) (2018-06-18)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.14...1.5.15)
+
+**Implemented enhancements:**
+
+- Host header setting incorrect for outbound HTTP calls [\#5](https://github.com/networknt/light-router/issues/5)
+
+**Closed issues:**
+
+- switch to default setExchangeStatus method for errors [\#8](https://github.com/networknt/light-router/issues/8)
+- add pathServiceHandler to map endpoints to serviceId [\#7](https://github.com/networknt/light-router/issues/7)
+- clean up unused dependencies and config file for stateless-auth [\#6](https://github.com/networknt/light-router/issues/6)
+
 ## [1.5.14](https://github.com/networknt/light-router/tree/1.5.14) (2018-05-20)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.13...1.5.14)
 
