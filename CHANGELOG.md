@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.5.16](https://github.com/networknt/light-router/tree/1.5.16) (2018-07-05)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.15...1.5.16)
+
+**Closed issues:**
+
+- Fix dependencies for the router [\#9](https://github.com/networknt/light-router/issues/9)
+
 ## [1.5.15](https://github.com/networknt/light-router/tree/1.5.15) (2018-06-18)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.14...1.5.15)
 
