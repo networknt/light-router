@@ -2,6 +2,7 @@ package com.networknt.router.middleware;
 
 import com.networknt.audit.AuditHandler;
 import com.networknt.config.Config;
+import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
 import com.networknt.utility.Constants;
 import com.networknt.utility.ModuleRegistry;
@@ -64,7 +65,7 @@ public class PathServiceHandler implements MiddlewareHandler {
             setExchangeStatus(exchange, AUDIT_INFO_NOT_FOUND);
             return;
         }
-        next.handleRequest(exchange);
+        Handler.next(exchange, next);
     }
 
     @Override
