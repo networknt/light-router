@@ -9,6 +9,7 @@ import com.networknt.common.DecryptUtil;
 import com.networknt.config.Config;
 import com.networknt.exception.ApiException;
 import com.networknt.exception.ClientException;
+import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
 import com.networknt.router.RouterProxyClient;
 import com.networknt.status.Status;
@@ -128,6 +129,7 @@ public class TokenHandler implements MiddlewareHandler {
         // assume that the subject token has the scope already?)
         checkCCTokenExpired();
         exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + jwt);
+        Handler.next(exchange, next);
     }
 
     @Override
