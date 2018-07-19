@@ -3,6 +3,7 @@ package com.networknt.router;
 import com.networknt.client.Http2Client;
 import com.networknt.cluster.Cluster;
 import com.networknt.service.SingletonServiceFactory;
+import com.networknt.utility.Constants;
 import io.undertow.UndertowOptions;
 import io.undertow.client.ClientCallback;
 import io.undertow.client.ClientConnection;
@@ -24,10 +25,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This is a simple proxy client for light-router and it can discover and load balance
- * the hosts from Consul or other service discovery services supported by light platform.
+ * the hosts from Consul or other service discovery services supported by the light platform.
  *
- * As the target servers are implemented in light-4j which is HTTP 2.0, there is no need
- * to have a connection pool to be implemented. For each host, there would be only one
+ * As the target servers are implemented in light-4j which is HTTP 2.0 supported, there is no
+ * need to have a connection pool to be implemented. For each host, there would be only one
  * connection as HTTP 2.0 supports multiplexing.
  *
  * @author Steve Hu

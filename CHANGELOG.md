@@ -1,5 +1,37 @@
 # Change Log
 
+## [1.5.16](https://github.com/networknt/light-router/tree/1.5.16) (2018-07-05)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.15...1.5.16)
+
+**Closed issues:**
+
+- Fix dependencies for the router [\#9](https://github.com/networknt/light-router/issues/9)
+
+## [1.5.15](https://github.com/networknt/light-router/tree/1.5.15) (2018-06-18)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.14...1.5.15)
+
+**Implemented enhancements:**
+
+- Host header setting incorrect for outbound HTTP calls [\#5](https://github.com/networknt/light-router/issues/5)
+
+**Closed issues:**
+
+- switch to default setExchangeStatus method for errors [\#8](https://github.com/networknt/light-router/issues/8)
+- add pathServiceHandler to map endpoints to serviceId [\#7](https://github.com/networknt/light-router/issues/7)
+- clean up unused dependencies and config file for stateless-auth [\#6](https://github.com/networknt/light-router/issues/6)
+
+## [1.5.14](https://github.com/networknt/light-router/tree/1.5.14) (2018-05-20)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.13...1.5.14)
+
+**Closed issues:**
+
+- move enableHttp2 for light-oauth2 connection to client.yml [\#4](https://github.com/networknt/light-router/issues/4)
+- upgrade to latest release and add cors, auth and csrf dependencies [\#3](https://github.com/networknt/light-router/issues/3)
+- update dockerfile to set container memory limit [\#2](https://github.com/networknt/light-router/issues/2)
+
+## [1.5.13](https://github.com/networknt/light-router/tree/1.5.13) (2018-04-20)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.12...1.5.13)
+
 ## [1.5.12](https://github.com/networknt/light-router/tree/1.5.12) (2018-04-07)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.11...1.5.12)
 
