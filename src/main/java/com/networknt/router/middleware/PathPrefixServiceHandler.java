@@ -29,7 +29,7 @@ import java.util.Map;
  * Unlike {@link PathServiceHandler}, this handler does not require OpenAPIHandler or SwaggerHandler
  * but is also unable to do any validation beyond the path prefix.
  *
- * @author Logi Ragnarsson <logi@logi.org>
+ * @author <a href="mailto:logi@logi.org">Logi Ragnarsson</a>
  * @author Steve Hu
  */
 public class PathPrefixServiceHandler implements MiddlewareHandler {
