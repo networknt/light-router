@@ -102,6 +102,7 @@ public class PathServiceHandlerTest {
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/address/111").setMethod(Methods.GET);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
             connection.sendRequest(request, client.createClientCallback(reference, latch));
             latch.await();
         } catch (Exception e) {
@@ -136,6 +137,7 @@ public class PathServiceHandlerTest {
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v2/address").setMethod(Methods.GET);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
             connection.sendRequest(request, client.createClientCallback(reference, latch));
             latch.await();
         } catch (Exception e) {
@@ -170,6 +172,7 @@ public class PathServiceHandlerTest {
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/contact").setMethod(Methods.POST);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
             request.getRequestHeaders().put(Headers.CONTENT_TYPE, "application/json");
             request.getRequestHeaders().put(Headers.TRANSFER_ENCODING, "chunked");
             connection.sendRequest(request, client.createClientCallback(reference, latch, "{\"key\":\"value\"}"));
