@@ -1,5 +1,22 @@
 # Change Log
 
+## [1.5.18](https://github.com/networknt/light-router/tree/1.5.18) (2018-08-16)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.17...1.5.18)
+
+**Closed issues:**
+
+- flatten the config files into the same directory for k8s [\#14](https://github.com/networknt/light-router/issues/14)
+- upgrade to undertow 2.0.11.Final [\#13](https://github.com/networknt/light-router/issues/13)
+- add deref handle to the dependencies but not in the middleware [\#11](https://github.com/networknt/light-router/issues/11)
+- Call to next missing from TokenHandler [\#10](https://github.com/networknt/light-router/issues/10)
+
+**Merged pull requests:**
+
+- A PathPrefixServiceHandler as a simplified PathServiceHandler… [\#12](https://github.com/networknt/light-router/pull/12) ([logi](https://github.com/logi))
+
+## [1.5.17](https://github.com/networknt/light-router/tree/1.5.17) (2018-07-10)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.16...1.5.17)
+
 ## [1.5.16](https://github.com/networknt/light-router/tree/1.5.16) (2018-07-05)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.15...1.5.16)
 
