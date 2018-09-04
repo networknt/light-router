@@ -3,7 +3,7 @@ package com.networknt.router.middleware;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
-import com.networknt.utility.Constants;
+import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
@@ -50,7 +50,7 @@ public class PathPrefixServiceHandler implements MiddlewareHandler {
 
     @Override
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
-        HeaderValues serviceIdHeader = exchange.getRequestHeaders().get(Constants.SERVICE_ID);
+        HeaderValues serviceIdHeader = exchange.getRequestHeaders().get(HttpStringConstants.SERVICE_ID);
         String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
         if(serviceId == null) {
             String requestPath = exchange.getRequestURI();
@@ -59,7 +59,7 @@ public class PathPrefixServiceHandler implements MiddlewareHandler {
                 setExchangeStatus(exchange, STATUS_INVALID_REQUEST_PATH, requestPath);
                 return;
             }
-            exchange.getRequestHeaders().put(Constants.SERVICE_ID, serviceId);
+            exchange.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, serviceId);
         }
         Handler.next(exchange, next);
     }

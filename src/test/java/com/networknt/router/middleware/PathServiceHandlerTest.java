@@ -3,8 +3,8 @@ package com.networknt.router.middleware;
 import com.networknt.client.Http2Client;
 import com.networknt.exception.ClientException;
 import com.networknt.header.HeaderHandler;
+import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.openapi.OpenApiHandler;
-import com.networknt.utility.Constants;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
@@ -72,18 +72,18 @@ public class PathServiceHandlerTest {
     static RoutingHandler getTestHandler() {
         return Handlers.routing()
                 .add(Methods.GET, "/v1/address/{id}", exchange -> {
-                    exchange.getResponseHeaders().put(Constants.SERVICE_ID, exchange.getRequestHeaders().getFirst(Constants.SERVICE_ID));
-                    exchange.getResponseHeaders().put(Constants.ENV_TAG, exchange.getRequestHeaders().getFirst(Constants.ENV_TAG));
+                    exchange.getResponseHeaders().put(HttpStringConstants.SERVICE_ID, exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_ID));
+                    exchange.getResponseHeaders().put(HttpStringConstants.ENV_TAG, exchange.getRequestHeaders().getFirst(HttpStringConstants.ENV_TAG));
                     exchange.getResponseSender().send("OK");
                 })
                 .add(Methods.GET, "/v2/address", exchange -> {
-                    exchange.getResponseHeaders().put(Constants.SERVICE_ID, exchange.getRequestHeaders().getFirst(Constants.SERVICE_ID));
-                    exchange.getResponseHeaders().put(Constants.ENV_TAG, exchange.getRequestHeaders().getFirst(Constants.ENV_TAG));
+                    exchange.getResponseHeaders().put(HttpStringConstants.SERVICE_ID, exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_ID));
+                    exchange.getResponseHeaders().put(HttpStringConstants.ENV_TAG, exchange.getRequestHeaders().getFirst(HttpStringConstants.ENV_TAG));
                     exchange.getResponseSender().send("OK");
                 })
                 .add(Methods.POST, "/v1/contact", exchange -> {
-                    exchange.getResponseHeaders().put(Constants.SERVICE_ID, exchange.getRequestHeaders().getFirst(Constants.SERVICE_ID));
-                    exchange.getResponseHeaders().put(Constants.ENV_TAG, exchange.getRequestHeaders().getFirst(Constants.ENV_TAG));
+                    exchange.getResponseHeaders().put(HttpStringConstants.SERVICE_ID, exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_ID));
+                    exchange.getResponseHeaders().put(HttpStringConstants.ENV_TAG, exchange.getRequestHeaders().getFirst(HttpStringConstants.ENV_TAG));
                     exchange.getResponseSender().send("OK");
                 });
     }
@@ -114,8 +114,8 @@ public class PathServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         if(statusCode == 200) {
             Assert.assertTrue("party.address-1.0.0".equals(serviceId));
@@ -149,8 +149,8 @@ public class PathServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         if(statusCode == 200) {
             Assert.assertTrue("party.address-2.0.0".equals(serviceId));
@@ -186,8 +186,8 @@ public class PathServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         if(statusCode == 200) {
             Assert.assertTrue("party.contact-1.0.0".equals(serviceId));

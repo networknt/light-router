@@ -4,6 +4,7 @@ import com.networknt.audit.AuditHandler;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
+import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.utility.Constants;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
@@ -58,7 +59,7 @@ public class PathServiceHandler implements MiddlewareHandler {
             // now find the mapped serviceId from the mapping.
             if(endpoint != null) {
                 String serviceId = mapping.get(endpoint);
-                exchange.getRequestHeaders().put(Constants.SERVICE_ID, serviceId);
+                exchange.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, serviceId);
             }
         } else {
             // couldn't find auditInfo object in exchange attachment.

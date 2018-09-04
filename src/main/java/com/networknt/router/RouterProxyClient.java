@@ -2,6 +2,7 @@ package com.networknt.router;
 
 import com.networknt.client.Http2Client;
 import com.networknt.cluster.Cluster;
+import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.service.SingletonServiceFactory;
 import com.networknt.utility.Constants;
 import io.undertow.UndertowOptions;
@@ -58,8 +59,8 @@ public class RouterProxyClient implements ProxyClient {
     public void getConnection(ProxyTarget target, HttpServerExchange exchange, ProxyCallback<ProxyConnection> callback, long timeout, TimeUnit timeUnit) {
         // get serviceId, env tag and hash key from header.
         HeaderMap headers = exchange.getRequestHeaders();
-        String serviceId = headers.getFirst(Constants.SERVICE_ID);
-        String envTag = headers.getFirst(Constants.ENV_TAG);
+        String serviceId = headers.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
         String key = serviceId + envTag;
         // base on that try to lookup a connection in connectionMap, create a new one if it
         ClientConnection existing = connectionMap.get(key);
@@ -96,8 +97,8 @@ public class RouterProxyClient implements ProxyClient {
             if(logger.isDebugEnabled()) logger.debug("ConnectNotifier completed is called with connection " + connection);
             // put connection into the connectionMap so that it can be reused.
             HeaderMap headers = exchange.getRequestHeaders();
-            String serviceId = headers.getFirst(Constants.SERVICE_ID);
-            String envTag = headers.getFirst(Constants.ENV_TAG);
+            String serviceId = headers.getFirst(HttpStringConstants.SERVICE_ID);
+            String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
             String key = serviceId + envTag;
             connectionMap.put(key, connection);
             callback.completed(exchange, new ProxyConnection(connection, "/"));

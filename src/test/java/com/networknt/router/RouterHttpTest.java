@@ -5,6 +5,7 @@ import com.networknt.common.DecryptUtil;
 import com.networknt.common.SecretConstants;
 import com.networknt.config.Config;
 import com.networknt.exception.ClientException;
+import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.server.ServerConfig;
 import com.networknt.utility.Constants;
 import io.undertow.Undertow;
@@ -160,7 +161,7 @@ public class RouterHttpTest {
                         AtomicReference<ClientResponse> reference = new AtomicReference<>();
                         references.add(i, reference);
                         final ClientRequest request = new ClientRequest().setMethod(Methods.GET).setPath("/v2/address");
-                        request.getRequestHeaders().put(Constants.SERVICE_ID, "com.networknt.test-1.0.0");
+                        request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "com.networknt.test-1.0.0");
                         connection.sendRequest(request, client.createClientCallback(reference, latch));
                     }
                 }

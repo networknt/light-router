@@ -3,7 +3,7 @@ package com.networknt.router.middleware;
 import com.networknt.client.Http2Client;
 import com.networknt.exception.ClientException;
 import com.networknt.header.HeaderHandler;
-import com.networknt.utility.Constants;
+import com.networknt.httpstring.HttpStringConstants;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
@@ -71,18 +71,18 @@ public class PathPrefixServiceHandlerTest {
     static RoutingHandler getTestHandler() {
         return Handlers.routing()
                 .add(Methods.GET, "/v1/address/{id}", exchange -> {
-                    exchange.getResponseHeaders().put(Constants.SERVICE_ID, exchange.getRequestHeaders().getFirst(Constants.SERVICE_ID));
-                    exchange.getResponseHeaders().put(Constants.ENV_TAG, exchange.getRequestHeaders().getFirst(Constants.ENV_TAG));
+                    exchange.getResponseHeaders().put(HttpStringConstants.SERVICE_ID, exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_ID));
+                    exchange.getResponseHeaders().put(HttpStringConstants.ENV_TAG, exchange.getRequestHeaders().getFirst(HttpStringConstants.ENV_TAG));
                     exchange.getResponseSender().send("OK");
                 })
                 .add(Methods.GET, "/v2/address", exchange -> {
-                    exchange.getResponseHeaders().put(Constants.SERVICE_ID, exchange.getRequestHeaders().getFirst(Constants.SERVICE_ID));
-                    exchange.getResponseHeaders().put(Constants.ENV_TAG, exchange.getRequestHeaders().getFirst(Constants.ENV_TAG));
+                    exchange.getResponseHeaders().put(HttpStringConstants.SERVICE_ID, exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_ID));
+                    exchange.getResponseHeaders().put(HttpStringConstants.ENV_TAG, exchange.getRequestHeaders().getFirst(HttpStringConstants.ENV_TAG));
                     exchange.getResponseSender().send("OK");
                 })
                 .add(Methods.POST, "/v1/contact", exchange -> {
-                    exchange.getResponseHeaders().put(Constants.SERVICE_ID, exchange.getRequestHeaders().getFirst(Constants.SERVICE_ID));
-                    exchange.getResponseHeaders().put(Constants.ENV_TAG, exchange.getRequestHeaders().getFirst(Constants.ENV_TAG));
+                    exchange.getResponseHeaders().put(HttpStringConstants.SERVICE_ID, exchange.getRequestHeaders().getFirst(HttpStringConstants.SERVICE_ID));
+                    exchange.getResponseHeaders().put(HttpStringConstants.ENV_TAG, exchange.getRequestHeaders().getFirst(HttpStringConstants.ENV_TAG));
                     exchange.getResponseSender().send("OK");
                 });
     }
@@ -141,8 +141,8 @@ public class PathPrefixServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         Assert.assertEquals("OK", body);
         Assert.assertEquals("party.address-1.0.0", serviceId);
@@ -175,8 +175,8 @@ public class PathPrefixServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         Assert.assertEquals("OK", body);
         Assert.assertEquals("party.address-2.0.0", serviceId);
@@ -211,8 +211,8 @@ public class PathPrefixServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         Assert.assertEquals("OK", body);
         Assert.assertEquals("party.contact-1.0.0", serviceId);
@@ -265,7 +265,7 @@ public class PathPrefixServiceHandlerTest {
         try {
             ClientRequest request = new ClientRequest().setPath("/v1/address/111").setMethod(Methods.GET);
             request.getRequestHeaders().put(Headers.HOST, "localhost");
-            request.getRequestHeaders().put(Constants.SERVICE_ID, "party.address-2.0.0");
+            request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "party.address-2.0.0");
             request.getRequestHeaders().put(Headers.CONTENT_TYPE, "application/json");
             request.getRequestHeaders().put(Headers.TRANSFER_ENCODING, "chunked");
             connection.sendRequest(request, client.createClientCallback(reference, latch, "{\"key\":\"value\"}"));
@@ -279,8 +279,8 @@ public class PathPrefixServiceHandlerTest {
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
         HeaderMap headerMap = reference.get().getResponseHeaders();
-        String serviceId = headerMap.getFirst(Constants.SERVICE_ID);
-        String envTag = headerMap.getFirst(Constants.ENV_TAG);
+        String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
+        String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
         Assert.assertEquals(200, statusCode);
         Assert.assertEquals("OK", body);
         Assert.assertEquals("party.address-2.0.0", serviceId);
