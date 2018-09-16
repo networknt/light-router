@@ -117,8 +117,8 @@ public class SAMLTokenHandler implements MiddlewareHandler {
         //getSAMLBearerToken(exchange.getRequestHeaders().getFirst("assertion"), exchange.getRequestHeaders().getFirst("client-assertion"));
 
         exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + jwt);
-        exchange.getRequestHeaders().remove("assertion");
-        exchange.getRequestHeaders().remove("client-assertion");
+        exchange.getRequestHeaders().remove(SAMLAssertionHeader);
+        exchange.getRequestHeaders().remove(JWTAssertionHeader);
         Handler.next(exchange, next);
     }
 
