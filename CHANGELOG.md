@@ -1,5 +1,19 @@
 # Change Log
 
+## [1.5.19](https://github.com/networknt/light-router/tree/1.5.19) (2018-09-22)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.18...1.5.19)
+
+**Closed issues:**
+
+- remove openapi-parser service mapping from service.yml [\#20](https://github.com/networknt/light-router/issues/20)
+- Disable the SAMLTokenTest [\#19](https://github.com/networknt/light-router/issues/19)
+- switch to http-string module for HttpString headers constants [\#16](https://github.com/networknt/light-router/issues/16)
+- rename deref to deref-token [\#15](https://github.com/networknt/light-router/issues/15)
+
+**Merged pull requests:**
+
+- Middleware handler for SAMLBearer grant type [\#18](https://github.com/networknt/light-router/pull/18) ([dguncb](https://github.com/dguncb))
+
 ## [1.5.18](https://github.com/networknt/light-router/tree/1.5.18) (2018-08-16)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.17...1.5.18)
 
