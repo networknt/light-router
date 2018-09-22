@@ -145,7 +145,7 @@ public class SAMLTokenTest {
     }
 
 
-    @Test
+    //@Test
     public void testGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
