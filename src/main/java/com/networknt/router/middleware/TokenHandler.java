@@ -1,6 +1,5 @@
 package com.networknt.router.middleware;
 
-import com.networknt.client.Http2Client;
 import com.networknt.client.oauth.ClientCredentialsRequest;
 import com.networknt.client.oauth.OauthHelper;
 import com.networknt.client.oauth.TokenRequest;
@@ -11,7 +10,6 @@ import com.networknt.exception.ApiException;
 import com.networknt.exception.ClientException;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
-import com.networknt.router.RouterProxyClient;
 import com.networknt.status.Status;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
@@ -27,7 +25,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static com.networknt.client.Http2Client.CONFIG_SECRET;
-import static com.networknt.client.Http2Client.CONFIG_SECURITY;
 
 /**
  * This is a middleware handler that is responsible for getting a JWT access token from
@@ -62,6 +59,7 @@ public class TokenHandler implements MiddlewareHandler {
     public static final String CONFIG_NAME = "token";
     public static final String CLIENT_CONFIG_NAME = "client";
     public static final String ENABLED = "enabled";
+    public static final String CONFIG_SECURITY = "security";
 
     public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
     static Logger logger = LoggerFactory.getLogger(TokenHandler.class);

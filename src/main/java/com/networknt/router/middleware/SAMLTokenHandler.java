@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 import static com.networknt.client.Http2Client.CONFIG_SECRET;
-import static com.networknt.client.Http2Client.CONFIG_SECURITY;
 
 /**
  * This is a middleware handler that is responsible for getting a JWT access token from
@@ -37,6 +36,7 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     public static final String CONFIG_NAME = "token";
     public static final String CLIENT_CONFIG_NAME = "client";
     public static final String ENABLED = "enabled";
+    public static final String CONFIG_SECURITY = "security";
 
     public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
     static Logger logger = LoggerFactory.getLogger(SAMLTokenHandler.class);
