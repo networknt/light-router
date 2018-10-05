@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.5.20](https://github.com/networknt/light-router/tree/1.5.20) (2018-10-05)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.19...1.5.20)
+
+**Closed issues:**
+
+- remove static dependency for security config name on Http2Client [\#23](https://github.com/networknt/light-router/issues/23)
+- Add new handler to support SAML grant type flow [\#17](https://github.com/networknt/light-router/issues/17)
+
 ## [1.5.19](https://github.com/networknt/light-router/tree/1.5.19) (2018-09-22)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.18...1.5.19)
 
