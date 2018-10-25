@@ -50,7 +50,7 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     static final String OAUTH_HTTP2_SUPPORT = "oauthHttp2Support";
 
     static final String SAMLAssertionHeader = "assertion";
-    static final String JWTAssertionHeader = "client-assertion";
+    static final String JWTAssertionHeader = "client_assertion";
 
     static final String STATUS_SAMLBEARER_CREDENTIALS_TOKEN_NOT_AVAILABLE = "ERR10009";
 
