@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.5.21](https://github.com/networknt/light-router/tree/1.5.21) (2018-10-26)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.20...1.5.21)
+
+**Fixed bugs:**
+
+- Update client assertion header field name to client\_assertion [\#24](https://github.com/networknt/light-router/issues/24)
+
 ## [1.5.20](https://github.com/networknt/light-router/tree/1.5.20) (2018-10-05)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.19...1.5.20)
 
