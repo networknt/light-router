@@ -102,6 +102,11 @@
         </dependency>
         <dependency>
             <groupId>com.networknt</groupId>
+            <artifactId>health</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
             <artifactId>decryptor</artifactId>
             <version>${version.light-4j}</version>
         </dependency>
@@ -133,6 +138,11 @@
         <dependency>
             <groupId>com.networknt</groupId>
             <artifactId>deref-token</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>resource</artifactId>
             <version>${version.light-4j}</version>
         </dependency>
         <dependency>
