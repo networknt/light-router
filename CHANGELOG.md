@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.5.22](https://github.com/networknt/light-router/tree/1.5.22) (2018-11-10)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.21...1.5.22)
+
+**Closed issues:**
+
+- upgrade light-router to use handler.yml instead of PathProvider [\#26](https://github.com/networknt/light-router/issues/26)
+- update readme to point to the right gitter room [\#25](https://github.com/networknt/light-router/issues/25)
+
 ## [1.5.21](https://github.com/networknt/light-router/tree/1.5.21) (2018-10-26)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.20...1.5.21)
 
