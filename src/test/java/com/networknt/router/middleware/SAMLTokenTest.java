@@ -1,5 +1,4 @@
 package com.networknt.router.middleware;
-
 import com.networknt.router.TestServer;
 import com.networknt.client.Http2Client;
 import com.networknt.common.DecryptUtil;
@@ -145,7 +144,7 @@ public class SAMLTokenTest {
     }
 
 
-    //@Test
+    @Test
     public void testGet() throws Exception {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
@@ -160,14 +159,13 @@ public class SAMLTokenTest {
             connection.getIoThread().execute(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < 1; i++) {
+                    for (int i = 0; i < 10; i++) {
                         AtomicReference<ClientResponse> reference = new AtomicReference<>();
                         references.add(i, reference);
                         final ClientRequest request = new ClientRequest().setMethod(Methods.GET).setPath("/v2/address");
                         request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "com.networknt.test-1.0.0");
                         request.getRequestHeaders().put(new HttpString("assertion") , SAMLAssertion);
-                        request.getRequestHeaders().put(new HttpString("client-assertion") , JWTAssertion);
-
+                        request.getRequestHeaders().put(new HttpString("client_assertion") , JWTAssertion);
                         connection.sendRequest(request, client.createClientCallback(reference, latch));
                     }
                 }
