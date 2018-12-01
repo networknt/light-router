@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.5.23](https://github.com/networknt/light-router/tree/1.5.23) (2018-12-01)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.22...1.5.23)
+
+**Closed issues:**
+
+- Router loses parts of lare request bodies. [\#22](https://github.com/networknt/light-router/issues/22)
+
+**Merged pull requests:**
+
+- Junit test class created for SAMLTokenHandler [\#28](https://github.com/networknt/light-router/pull/28) ([sreenicibc](https://github.com/sreenicibc))
+
 ## [1.5.22](https://github.com/networknt/light-router/tree/1.5.22) (2018-11-10)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.21...1.5.22)
 
