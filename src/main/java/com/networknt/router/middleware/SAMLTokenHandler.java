@@ -16,6 +16,7 @@ import io.undertow.util.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Base64;
 import java.util.Map;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -149,20 +150,21 @@ public class SAMLTokenHandler implements MiddlewareHandler {
             jwt = tokenResponse.getAccessToken();
             // the expiresIn is seconds and it is converted to millisecond in the future.
             expire = System.currentTimeMillis() + tokenResponse.getExpiresIn() * 1000;
-            logger.info("Get client credentials token {} with expire_in {} seconds", jwt, tokenResponse.getExpiresIn());
+            logger.debug("Get client credentials token {} with expire_in {} seconds", jwt, tokenResponse.getExpiresIn());
         }
     }
 
-    //Converting samlAssertion into MD5 hash.
-    private String getSAMLMd5Token(String samlAssertion) {
+    //Converting samlAssertion into SAH256 hash.
+    private String getHashSaml(String samlAssertion) {
         String samlToken = null;
+
         if (samlAssertion == null) {
             return samlToken;
         }
         try {
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            digest.update(samlAssertion.getBytes(), 0, samlAssertion.length());
-            samlToken = new BigInteger(1, digest.digest()).toString(16);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(samlAssertion.getBytes(StandardCharsets.UTF_8));
+            samlToken = Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
             logger.error("Invalid samlAssertion :", samlAssertion, e);
             e.printStackTrace();
@@ -171,17 +173,17 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     }
 
     private void getJWTToken(String samlAssertion, String jwtAssertion) throws ClientException, ApiException {
-        //MD5 hash
-        String samlToken = getSAMLMd5Token(samlAssertion);
+
+        String samlToken = getHashSaml(samlAssertion);
 
         if (hashSaml != null && hashSaml.equals(samlToken)) {
-            logger.info("Checking JwtTokenExpired..");
+            logger.debug("Checking JwtTokenExpired..");
             checkJwtTokenExpired(samlAssertion, jwtAssertion);
         } else {
             //Make a call to the Oauth server get a new JWT bearer token;
             getJwtBearerToken(samlAssertion, jwtAssertion);
             hashSaml = samlToken;
-            logger.info("New samltoken :" + hashSaml);
+            logger.debug("New samltoken :" + hashSaml);
         }
 
     }
