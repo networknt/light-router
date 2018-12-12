@@ -13,9 +13,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Map;
-
 import static com.networknt.client.Http2Client.CONFIG_SECRET;
 
 /**
@@ -38,12 +36,13 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     public static final String ENABLED = "enabled";
     public static final String CONFIG_SECURITY = "security";
 
+
     public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
     static Logger logger = LoggerFactory.getLogger(SAMLTokenHandler.class);
     private volatile HttpHandler next;
 
-    private String jwt;    // the cached jwt token for client credentials grant type
-    private long expire;   // jwt expire time in millisecond so that we don't need to parse the jwt.
+    // private String jwt;    // the cached jwt token for client credentials grant type
+    // private long expire;   // jwt expire time in millisecond so that we don't need to parse the jwt.
 
     static final String OAUTH = "oauth";
     static final String TOKEN = "token";
@@ -91,7 +90,7 @@ public class SAMLTokenHandler implements MiddlewareHandler {
         // client credentials grant type with scopes for the particular client. (Can we just
         // assume that the subject token has the scope already?)
         logger.debug(exchange.toString());
-        getSAMLBearerToken(exchange.getRequestHeaders().getFirst(SAMLAssertionHeader), exchange.getRequestHeaders().getFirst(JWTAssertionHeader));
+        String jwt = getSAMLBearerToken(exchange.getRequestHeaders().getFirst(SAMLAssertionHeader), exchange.getRequestHeaders().getFirst(JWTAssertionHeader));
 
         exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + jwt);
         exchange.getRequestHeaders().remove(SAMLAssertionHeader);
@@ -123,14 +122,14 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     }
 
 
-    private void getSAMLBearerToken(String samlAssertion , String jwtAssertion) throws ClientException {
+    private String getSAMLBearerToken(String samlAssertion , String jwtAssertion) throws ClientException {
         SAMLBearerRequest tokenRequest = new SAMLBearerRequest(samlAssertion , jwtAssertion);
         TokenResponse tokenResponse = OauthHelper.getTokenFromSaml(tokenRequest);
-        synchronized (lock) {
-            jwt = tokenResponse.getAccessToken();
-            // the expiresIn is seconds and it is converted to millisecond in the future.
-            expire = System.currentTimeMillis() + tokenResponse.getExpiresIn() * 1000;
-            logger.info("Get client credentials token {} with expire_in {} seconds", jwt, tokenResponse.getExpiresIn());
-        }
+
+        String jwt = tokenResponse.getAccessToken();
+        // the expiresIn is seconds and it is converted to millisecond in the future.
+        //expire = System.currentTimeMillis() + tokenResponse.getExpiresIn() * 1000;
+        logger.debug("SAMLBearer Grant Type jwt: ", jwt);
+        return jwt ;
     }
 }
