@@ -41,9 +41,6 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     static Logger logger = LoggerFactory.getLogger(SAMLTokenHandler.class);
     private volatile HttpHandler next;
 
-    // private String jwt;    // the cached jwt token for client credentials grant type
-    // private long expire;   // jwt expire time in millisecond so that we don't need to parse the jwt.
-
     static final String OAUTH = "oauth";
     static final String TOKEN = "token";
     static final String OAUTH_HTTP2_SUPPORT = "oauthHttp2Support";
@@ -125,10 +122,7 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     private String getSAMLBearerToken(String samlAssertion , String jwtAssertion) throws ClientException {
         SAMLBearerRequest tokenRequest = new SAMLBearerRequest(samlAssertion , jwtAssertion);
         TokenResponse tokenResponse = OauthHelper.getTokenFromSaml(tokenRequest);
-
         String jwt = tokenResponse.getAccessToken();
-        // the expiresIn is seconds and it is converted to millisecond in the future.
-        //expire = System.currentTimeMillis() + tokenResponse.getExpiresIn() * 1000;
         logger.debug("SAMLBearer Grant Type jwt: ", jwt);
         return jwt ;
     }
