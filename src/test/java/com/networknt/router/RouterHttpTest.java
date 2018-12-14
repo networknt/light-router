@@ -38,6 +38,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.networknt.server.Server.TRUST_ALL_CERTS;
+import static io.undertow.Handlers.path;
 
 public class RouterHttpTest {
     static final Logger logger = LoggerFactory.getLogger(RouterHttpTest.class);
@@ -63,49 +64,57 @@ public class RouterHttpTest {
     public static void setUp() {
         if(server1 == null) {
             logger.info("starting server1");
-            server1 = Undertow.builder()
+            Undertow.Builder builder1 = Undertow.builder()
                     .addHttpsListener(8081, "localhost", sslContext)
-                    .setHandler(new HttpHandler() {
+                    .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server1");
                         }
-                    })
-                    .build();
-
+                    }));
+            if(enableHttp2) {
+                builder1.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
+            }
+            server1 = builder1.build();
             server1.start();
         }
 
         if(server2 == null) {
             logger.info("starting server2");
-            server2 = Undertow.builder()
+            Undertow.Builder builder2 = Undertow.builder()
                     .addHttpsListener(8082, "localhost", sslContext)
-                    .setHandler(new HttpHandler() {
+                    .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server2");
                         }
-                    })
-                    .build();
+                    }));
 
+            if(enableHttp2) {
+                builder2.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
+            }
+            server2 = builder2.build();
             server2.start();
         }
 
         if(server3 == null) {
             logger.info("starting server3");
-            server3 = Undertow.builder()
+            Undertow.Builder builder3 = Undertow.builder()
                     .addHttpsListener(8083, "localhost", sslContext)
-                    .setHandler(new HttpHandler() {
+                    .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server3");
                         }
-                    })
-                    .build();
+                    }));
 
+            if(enableHttp2) {
+                builder3.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
+            }
+            server3 = builder3.build();
             server3.start();
         }
     }
@@ -141,6 +150,39 @@ public class RouterHttpTest {
         }
     }
 
+    /**
+     * Calling server1 directly to ensure that the endpoint is working.
+     * @throws Exception
+     */
+    @Test
+    public void testServer1() throws Exception {
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI("https://localhost:8081"), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        try {
+            ClientRequest request = new ClientRequest().setPath("/v2/address").setMethod(Methods.GET);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
+            connection.sendRequest(request, client.createClientCallback(reference, latch));
+            latch.await();
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        int statusCode = reference.get().getResponseCode();
+        String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
+        Assert.assertEquals(200, statusCode);
+        if (statusCode == 200) {
+            Assert.assertEquals("Server1", body);
+        }
+    }
 
     @Test
     public void testGet() throws Exception {

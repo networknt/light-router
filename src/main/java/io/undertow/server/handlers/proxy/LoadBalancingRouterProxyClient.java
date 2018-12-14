@@ -126,35 +126,16 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         return this;
     }
 
-    public synchronized void addHosts(final String serviceId, final List<URI> uris) {
-        hosts.remove(serviceId);
+    public synchronized void addHosts(final String serviceId, final String envTag) {
+        String key = serviceId + envTag;
+        List<URI> uris = cluster.services(ssl == null ? "http" : "https", serviceId, envTag);
+        hosts.remove(key);
         Host[] newHosts = new Host[uris.size()];
         for (int i = 0; i < uris.size(); i++) {
             Host h = new Host(serviceId, bindAddress, uris.get(i), ssl, options);
             newHosts[i] = h;
         }
-        hosts.put(serviceId, newHosts);
-    }
-
-    public synchronized void removeHost(final String serviceId, final URI uri) {
-        int found = -1;
-        Host[] existing = hosts.get(serviceId);
-        Host removedHost = null;
-        for (int i = 0; i < existing.length; ++i) {
-            if (existing[i].uri.equals(uri)) {
-                found = i;
-                removedHost = existing[i];
-                break;
-            }
-        }
-        if (found == -1) {
-            return;
-        }
-        Host[] newHosts = new Host[existing.length - 1];
-        System.arraycopy(existing, 0, newHosts, 0, found);
-        System.arraycopy(existing, found + 1, newHosts, found, existing.length - found - 1);
-        hosts.put(serviceId, newHosts);
-        removedHost.connectionPool.close();
+        hosts.put(key, newHosts);
     }
 
     @Override
@@ -185,19 +166,20 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         String key = serviceId + envTag;
 
         AttachmentList<Host> attempted = exchange.getAttachment(ATTEMPTED_HOSTS);
-        Host[] hosts = this.hosts.get(key);
-        if (hosts.length == 0) {
+        Host[] hostArray = this.hosts.get(key);
+        if (hostArray == null || hostArray.length == 0) {
             // this must be the first this service is called since the router is started. discover here.
-            addHosts(serviceId, cluster.services(ssl == null ? "http" : "https", serviceId, envTag));
+            addHosts(serviceId, envTag);
+            hostArray = this.hosts.get(key);
         }
 
-        int host = hostSelector.selectHost(hosts);
+        int host = hostSelector.selectHost(hostArray);
 
         final int startHost = host; //if the all hosts have problems we come back to this one
         Host full = null;
         Host problem = null;
         do {
-            Host selected = hosts[host];
+            Host selected = hostArray[host];
             if (attempted == null || !attempted.contains(selected)) {
                 ProxyConnectionPool.AvailabilityType available = selected.connectionPool.available();
                 if (available == AVAILABLE) {
@@ -208,13 +190,13 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
                     problem = selected;
                 }
             }
-            host = (host + 1) % hosts.length;
+            host = (host + 1) % hostArray.length;
         } while (host != startHost);
         if (full != null) {
             return full;
         }
         if (problem != null) {
-            addHosts(serviceId, cluster.services(ssl == null ? "http" : "https", serviceId, envTag));
+            addHosts(serviceId, envTag);
         }
         //no available hosts
         return null;
