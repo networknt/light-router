@@ -1,10 +1,14 @@
 package com.networknt.router;
 
+import com.networknt.client.Http2Client;
 import com.networknt.config.Config;
+import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.ResponseCodeHandler;
+import io.undertow.server.handlers.proxy.LoadBalancingRouterProxyClient;
 import io.undertow.server.handlers.proxy.ProxyHandler;
+import org.xnio.OptionMap;
 
 /**
  * This is a wrapper class for ProxyHandler as it is implemented as final. This class implements
@@ -22,9 +26,15 @@ public class RouterHandler implements HttpHandler {
     public RouterHandler() {
         // As we are building a client side router for the light platform, the assumption is the server will
         // be on HTTP 2.0 TSL always. No need to handle HTTP 1.1 case here.
-        RouterProxyClient routerProxyClient = new RouterProxyClient();
+        LoadBalancingRouterProxyClient client = new LoadBalancingRouterProxyClient();
+        if(config.httpsEnabled) client.setSsl(Http2Client.SSL);
+        if(config.http2Enabled) {
+            client.setOptionMap(OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+        } else {
+            client.setOptionMap(OptionMap.EMPTY);
+        }
         proxyHandler = ProxyHandler.builder()
-                .setProxyClient(routerProxyClient)
+                .setProxyClient(client)
                 .setMaxConnectionRetries(config.maxConnectionRetries)
                 .setMaxRequestTime(config.maxRequestTime)
                 .setReuseXForwarded(config.reuseXForwarded)
