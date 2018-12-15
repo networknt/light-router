@@ -1,5 +1,18 @@
 # Change Log
 
+## [1.5.24](https://github.com/networknt/light-router/tree/1.5.24) (2018-12-15)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.23...1.5.24)
+
+**Closed issues:**
+
+- implement load balance of proxy client [\#36](https://github.com/networknt/light-router/issues/36)
+- \(API 43\)  Use request scope when we create new jwt in light-router. [\#33](https://github.com/networknt/light-router/issues/33)
+
+**Merged pull requests:**
+
+- Balance [\#37](https://github.com/networknt/light-router/pull/37) ([stevehu](https://github.com/stevehu))
+- Issue \#33 Use request scope when we create new jwt in light-router. [\#34](https://github.com/networknt/light-router/pull/34) ([sreenicibc](https://github.com/sreenicibc))
+
 ## [1.5.23](https://github.com/networknt/light-router/tree/1.5.23) (2018-12-01)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.22...1.5.23)
 
