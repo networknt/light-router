@@ -45,6 +45,7 @@ public class RouterProxyClient implements ProxyClient {
 
     private final Http2Client client;
     private static final ProxyTarget PROXY_TARGET = new ProxyTarget() {};
+    private static final HostWhitelistHandler hostWhitelistHandler = SingletonServiceFactory.getBean(HostWhitelistHandler.class);
 
     public RouterProxyClient() {
         client = Http2Client.getInstance();
@@ -60,12 +61,16 @@ public class RouterProxyClient implements ProxyClient {
         // get serviceId, env tag and hash key from header.
         HeaderMap headers = exchange.getRequestHeaders();
         String serviceId = headers.getFirst(HttpStringConstants.SERVICE_ID);
+        String serviceUrl = headers.getFirst(HttpStringConstants.SERVICE_URL);
+        if (serviceUrl != null) {
+            logger.debug(String.format("Found %s in request header: %s", "service_url", serviceUrl));
+        }
         String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
-        String key = serviceId + envTag;
+        String key = (serviceUrl != null ? serviceUrl : serviceId) + envTag;
         // base on that try to lookup a connection in connectionMap, create a new one if it
         ClientConnection existing = connectionMap.get(key);
-        if(existing != null) {
-            if(existing.isOpen()) {
+        if (existing != null) {
+            if (existing.isOpen()) {
                 // This connection already has a client, re-use it.
                 callback.completed(exchange, new ProxyConnection(existing, "/"));
                 return;
@@ -75,9 +80,24 @@ public class RouterProxyClient implements ProxyClient {
             }
         }
         // doesn't exist or it is closed already. discovery here.
-        String host = cluster.serviceToUrl(Constants.HTTPS, serviceId, envTag, null);
+        String host = serviceUrl != null ? serviceUrl : cluster.serviceToUrl(Constants.HTTPS, serviceId, envTag, null);
         try {
-            client.connect(new RouterProxyClient.ConnectNotifier(callback, exchange), new URI(host), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+            URI uri = new URI(host);
+            if (serviceUrl != null) {
+                if (hostWhitelistHandler != null) {
+                    if (hostWhitelistHandler.isHostAllowed(uri)) {
+                        client.connect(new RouterProxyClient.ConnectNotifier(callback, exchange), uri, Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+                    } else {
+                        throw new RuntimeException(String.format("Route to %s is not allowed in the host whitelist", serviceUrl));
+                    }
+                } else {
+                    throw new RuntimeException(
+                            String.format("Host Whitelist must be enabled to support route based on %s in Http header",
+                                    HttpStringConstants.SERVICE_URL));
+                }
+            } else {
+                client.connect(new RouterProxyClient.ConnectNotifier(callback, exchange), uri, Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
+            }
         } catch (URISyntaxException e) {
             logger.error("Invalid URI:" + host, e);
         }
@@ -98,9 +118,12 @@ public class RouterProxyClient implements ProxyClient {
             // put connection into the connectionMap so that it can be reused.
             HeaderMap headers = exchange.getRequestHeaders();
             String serviceId = headers.getFirst(HttpStringConstants.SERVICE_ID);
+            String serviceUrl = headers.getFirst(HttpStringConstants.SERVICE_URL);
             String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
-            String key = serviceId + envTag;
-            connectionMap.put(key, connection);
+            if (serviceId != null || serviceUrl != null) {
+                String key = (serviceUrl != null ? serviceUrl : serviceId) + envTag;
+                connectionMap.put(key, connection);
+            }
             callback.completed(exchange, new ProxyConnection(connection, "/"));
         }
 
