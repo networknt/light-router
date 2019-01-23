@@ -1,6 +1,7 @@
 package io.undertow.server.handlers.proxy;
 
 import com.networknt.cluster.Cluster;
+import com.networknt.config.ConfigException;
 import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.router.HostWhitelist;
 import com.networknt.service.SingletonServiceFactory;
@@ -148,16 +149,21 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
 
     @Override
     public void getConnection(ProxyTarget target, HttpServerExchange exchange, final ProxyCallback<ProxyConnection> callback, long timeout, TimeUnit timeUnit) {
-        Host host = selectHost(exchange);
-        if (host == null) {
-            // give it second chance for service discovery again when problem occurs.
-            host = selectHost(exchange);
-        }
-        if (host == null) {
-            callback.couldNotResolveBackend(exchange);
-        } else {
-            exchange.addToAttachmentList(ATTEMPTED_HOSTS, host);
-            host.connectionPool.connect(target, exchange, callback, timeout, timeUnit, false);
+        try {
+            Host host = selectHost(exchange);
+            if (host == null) {
+                // give it second chance for service discovery again when problem occurs.
+                host = selectHost(exchange);
+            }
+            if (host == null) {
+                callback.couldNotResolveBackend(exchange);
+            } else {
+                exchange.addToAttachmentList(ATTEMPTED_HOSTS, host);
+                host.connectionPool.connect(target, exchange, callback, timeout, timeUnit, false);
+            }
+        } catch (Exception ex) {
+            exchange.setReasonPhrase(ex.getMessage());
+            callback.failed(exchange);
         }
     }
 
@@ -184,7 +190,7 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
                         }
 
                     } else {
-                        throw new RuntimeException(
+                        throw new ConfigException(
                                 String.format("Host Whitelist must be enabled to support route based on %s in Http header",
                                         HttpStringConstants.SERVICE_URL));
                     }

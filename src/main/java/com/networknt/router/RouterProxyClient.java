@@ -88,18 +88,21 @@ public class RouterProxyClient implements ProxyClient {
                     if (HOST_WHITELIST.isHostAllowed(uri)) {
                         client.connect(new RouterProxyClient.ConnectNotifier(callback, exchange), uri, Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
                     } else {
-                        throw new RuntimeException(String.format("Route to %s is not allowed in the host whitelist", serviceUrl));
+                        exchange.setReasonPhrase(String.format("Route to %s is not allowed in the host whitelist", serviceUrl));
+                        callback.failed(exchange);
                     }
                 } else {
-                    throw new RuntimeException(
-                            String.format("Host Whitelist must be enabled to support route based on %s in Http header",
-                                    HttpStringConstants.SERVICE_URL));
+                    exchange.setReasonPhrase(String.format("Host Whitelist must be enabled to support route based on %s in Http header",
+                            HttpStringConstants.SERVICE_URL));
+                    callback.failed(exchange);
                 }
             } else {
                 client.connect(new RouterProxyClient.ConnectNotifier(callback, exchange), uri, Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
             }
         } catch (URISyntaxException e) {
             logger.error("Invalid URI:" + host, e);
+            exchange.setReasonPhrase("Invalid URI:" + host);
+            callback.failed(exchange);
         }
     }
 
