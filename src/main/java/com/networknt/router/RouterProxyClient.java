@@ -45,7 +45,7 @@ public class RouterProxyClient implements ProxyClient {
 
     private final Http2Client client;
     private static final ProxyTarget PROXY_TARGET = new ProxyTarget() {};
-    private static final HostWhitelistHandler hostWhitelistHandler = SingletonServiceFactory.getBean(HostWhitelistHandler.class);
+    private static final HostWhitelist HOST_WHITELIST = SingletonServiceFactory.getBean(HostWhitelist.class);
 
     public RouterProxyClient() {
         client = Http2Client.getInstance();
@@ -84,8 +84,8 @@ public class RouterProxyClient implements ProxyClient {
         try {
             URI uri = new URI(host);
             if (serviceUrl != null) {
-                if (hostWhitelistHandler != null) {
-                    if (hostWhitelistHandler.isHostAllowed(uri)) {
+                if (HOST_WHITELIST != null) {
+                    if (HOST_WHITELIST.isHostAllowed(uri)) {
                         client.connect(new RouterProxyClient.ConnectNotifier(callback, exchange), uri, Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
                     } else {
                         throw new RuntimeException(String.format("Route to %s is not allowed in the host whitelist", serviceUrl));

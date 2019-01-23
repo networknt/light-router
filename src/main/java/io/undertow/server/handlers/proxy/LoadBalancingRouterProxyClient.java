@@ -2,7 +2,7 @@ package io.undertow.server.handlers.proxy;
 
 import com.networknt.cluster.Cluster;
 import com.networknt.httpstring.HttpStringConstants;
-import com.networknt.router.HostWhitelistHandler;
+import com.networknt.router.HostWhitelist;
 import com.networknt.service.SingletonServiceFactory;
 import io.undertow.client.UndertowClient;
 import io.undertow.server.HttpServerExchange;
@@ -32,7 +32,7 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
 
     private static final AttachmentKey<AttachmentList<Host>> ATTEMPTED_HOSTS = AttachmentKey.createList(Host.class);
     private static Cluster cluster = SingletonServiceFactory.getBean(Cluster.class);
-    private static final HostWhitelistHandler hostWhitelistHandler = SingletonServiceFactory.getBean(HostWhitelistHandler.class);
+    private static final HostWhitelist HOST_WHITELIST = SingletonServiceFactory.getBean(HostWhitelist.class);
 
     /**
      * Time in seconds between retries for problem servers
@@ -176,8 +176,8 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
             if (serviceUrl != null) {
                 try {
                     URI uri = new URI(serviceUrl);
-                    if (hostWhitelistHandler != null) {
-                        if (hostWhitelistHandler.isHostAllowed(uri)) {
+                    if (HOST_WHITELIST != null) {
+                        if (HOST_WHITELIST.isHostAllowed(uri)) {
                             this.hosts.put(key, new Host[] {new Host(serviceId, bindAddress, uri, ssl, options) });
                         } else {
                             throw new RuntimeException(String.format("Route to %s is not allowed in the host whitelist", serviceUrl));

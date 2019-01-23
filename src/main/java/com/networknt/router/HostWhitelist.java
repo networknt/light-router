@@ -6,7 +6,7 @@ import com.networknt.config.ConfigException;
 import java.net.URI;
 import java.util.Arrays;
 
-public class HostWhitelistHandler {
+public class HostWhitelist {
 
     private static final RouterConfig config = (RouterConfig) Config.getInstance()
             .getJsonObjectConfig("router", RouterConfig.class);

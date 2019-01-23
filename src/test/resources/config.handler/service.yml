@@ -17,8 +17,8 @@ singletons:
 - com.networknt.cluster.Cluster:
   - com.networknt.cluster.LightCluster
 ## Enable host whitelist when using service_url in header
-- com.networknt.router.HostWhitelistHandler:
-  - com.networknt.router.HostWhitelistHandler
+- com.networknt.router.HostWhitelist:
+  - com.networknt.router.HostWhitelist
 # StartupHookProvider implementations, there are one to many and they are called in the same sequence defined.
 # - com.networknt.server.StartupHookProvider:
   # - com.networknt.server.Test1StartupHook
