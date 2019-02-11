@@ -1,16 +1,11 @@
 package com.networknt.router.middleware;
 
-import com.networknt.client.oauth.ClientCredentialsRequest;
+import com.networknt.client.oauth.Jwt;
 import com.networknt.client.oauth.OauthHelper;
-import com.networknt.client.oauth.TokenRequest;
-import com.networknt.client.oauth.TokenResponse;
-import com.networknt.common.DecryptUtil;
 import com.networknt.config.Config;
-import com.networknt.exception.ApiException;
-import com.networknt.exception.ClientException;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
-import com.networknt.status.Status;
+import com.networknt.monad.Result;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
@@ -20,11 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import static com.networknt.client.Http2Client.CONFIG_SECRET;
 
 /**
  * This is a middleware handler that is responsible for getting a JWT access token from
@@ -57,66 +47,14 @@ import static com.networknt.client.Http2Client.CONFIG_SECRET;
  */
 public class TokenHandler implements MiddlewareHandler {
     public static final String CONFIG_NAME = "token";
-    public static final String CLIENT_CONFIG_NAME = "client";
     public static final String ENABLED = "enabled";
-    public static final String CONFIG_SECURITY = "security";
 
     public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
     static Logger logger = LoggerFactory.getLogger(TokenHandler.class);
     private volatile HttpHandler next;
-
-    private String jwt;    // the cached jwt token for client credentials grant type
-    private long expire;   // jwt expire time in millisecond so that we don't need to parse the jwt.
-    private volatile boolean renewing = false;
-    private volatile long expiredRetryTimeout;
-    private volatile long earlyRetryTimeout;
-
-
-    static final String TLS = "tls";
-    static final String LOAD_TRUST_STORE = "loadTrustStore";
-    static final String LOAD_KEY_STORE = "loadKeyStore";
-    static final String TRUST_STORE = "trustStore";
-    static final String KEY_STORE = "keyStore";
-    static final String TRUST_STORE_PROPERTY = "javax.net.ssl.trustStore";
-    static final String TRUST_STORE_PASSWORD_PROPERTY = "javax.net.ssl.trustStorePassword";
-
-    static final String OAUTH = "oauth";
-    static final String TOKEN = "token";
-    static final String TOKEN_RENEW_BEFORE_EXPIRED = "tokenRenewBeforeExpired";
-    static final String EXPIRED_REFRESH_RETRY_DELAY = "expiredRefreshRetryDelay";
-    static final String EARLY_REFRESH_RETRY_DELAY = "earlyRefreshRetryDelay";
-    static final String OAUTH_HTTP2_SUPPORT = "oauthHttp2Support";
-
-    static final String STATUS_CLIENT_CREDENTIALS_TOKEN_NOT_AVAILABLE = "ERR10009";
-
-    static Map<String, Object> clientConfig;
-    static Map<String, Object> tokenConfig;
-    static Map<String, Object> secretConfig;
-    static boolean oauthHttp2Support;
-
-    private final Object lock = new Object();
-
-    public TokenHandler() {
-        clientConfig = Config.getInstance().getJsonMapConfig(CLIENT_CONFIG_NAME);
-        if(clientConfig != null) {
-            Map<String, Object> oauthConfig = (Map<String, Object>)clientConfig.get(OAUTH);
-            if(oauthConfig != null) {
-                tokenConfig = (Map<String, Object>)oauthConfig.get(TOKEN);
-            }
-        }
-        Map<String, Object> securityConfig = Config.getInstance().getJsonMapConfig(CONFIG_SECURITY);
-        if(securityConfig != null) {
-            Boolean b = (Boolean)securityConfig.get(OAUTH_HTTP2_SUPPORT);
-            oauthHttp2Support = (b == null ? false : b.booleanValue());
-        }
-
-        Map<String, Object> secretMap = Config.getInstance().getJsonMapConfig(CONFIG_SECRET);
-        if(secretMap != null) {
-            secretConfig = DecryptUtil.decryptMap(secretMap);
-        } else {
-            throw new ExceptionInInitializerError("Could not locate secret.yml");
-        }
-    }
+    // Cached jwt token for this handler on behalf of a client.
+    private final Jwt cachedJwt = new Jwt();
+    public TokenHandler() { }
 
     @Override
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
@@ -125,8 +63,13 @@ public class TokenHandler implements MiddlewareHandler {
         // We will keep this token in the Authorization header but create a new token with
         // client credentials grant type with scopes for the particular client. (Can we just
         // assume that the subject token has the scope already?)
-        checkCCTokenExpired();
-        exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + jwt);
+        Result result = OauthHelper.populateCCToken(cachedJwt);
+        if(result.isFailure()) {
+            logger.error("cannot populate or renew jwt for client credential grant type");
+            OauthHelper.sendStatusToResponse(exchange, result.getError());
+            return;
+        }
+        exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + cachedJwt.getJwt());
         Handler.next(exchange, next);
     }
 
@@ -151,74 +94,5 @@ public class TokenHandler implements MiddlewareHandler {
     @Override
     public void register() {
         ModuleRegistry.registerModule(TokenHandler.class.getName(), config, null);
-    }
-
-    private void checkCCTokenExpired() throws ClientException, ApiException {
-        long tokenRenewBeforeExpired = (Integer) tokenConfig.get(TOKEN_RENEW_BEFORE_EXPIRED);
-        long expiredRefreshRetryDelay = (Integer)tokenConfig.get(EXPIRED_REFRESH_RETRY_DELAY);
-        long earlyRefreshRetryDelay = (Integer)tokenConfig.get(EARLY_REFRESH_RETRY_DELAY);
-        boolean isInRenewWindow = expire - System.currentTimeMillis() < tokenRenewBeforeExpired;
-        logger.trace("isInRenewWindow = " + isInRenewWindow);
-        if(isInRenewWindow) {
-            if(expire <= System.currentTimeMillis()) {
-                logger.trace("In renew window and token is expired.");
-                // block other request here to prevent using expired token.
-                synchronized (TokenHandler.class) {
-                    if(expire <= System.currentTimeMillis()) {
-                        logger.trace("Within the synch block, check if the current request need to renew token");
-                        if(!renewing || System.currentTimeMillis() > expiredRetryTimeout) {
-                            // if there is no other request is renewing or the renewing flag is true but renewTimeout is passed
-                            renewing = true;
-                            expiredRetryTimeout = System.currentTimeMillis() + expiredRefreshRetryDelay;
-                            logger.trace("Current request is renewing token synchronously as token is expired already");
-                            getCCToken();
-                            renewing = false;
-                        } else {
-                            logger.trace("Circuit breaker is tripped and not timeout yet!");
-                            // reject all waiting requests by thrown an exception.
-                            throw new ApiException(new Status(STATUS_CLIENT_CREDENTIALS_TOKEN_NOT_AVAILABLE));
-                        }
-                    }
-                }
-            } else {
-                // Not expired yet, try to renew async but let requests use the old token.
-                logger.trace("In renew window but token is not expired yet.");
-                synchronized (TokenHandler.class) {
-                    if(expire > System.currentTimeMillis()) {
-                        if(!renewing || System.currentTimeMillis() > earlyRetryTimeout) {
-                            renewing = true;
-                            earlyRetryTimeout = System.currentTimeMillis() + earlyRefreshRetryDelay;
-                            logger.trace("Retrieve token async is called while token is not expired yet");
-
-                            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
-                            executor.schedule(() -> {
-                                try {
-                                    getCCToken();
-                                    renewing = false;
-                                    logger.trace("Async get token is completed.");
-                                } catch (Exception e) {
-                                    logger.error("Async retrieve token error", e);
-                                    // swallow the exception here as it is on a best effort basis.
-                                }
-                            }, 50, TimeUnit.MILLISECONDS);
-                            executor.shutdown();
-                        }
-                    }
-                }
-            }
-        }
-        logger.trace("Check secondary token is done!");
-    }
-
-    private void getCCToken() throws ClientException {
-        TokenRequest tokenRequest = new ClientCredentialsRequest();
-        TokenResponse tokenResponse = OauthHelper.getToken(tokenRequest);
-        synchronized (lock) {
-            jwt = tokenResponse.getAccessToken();
-            // the expiresIn is seconds and it is converted to millisecond in the future.
-            expire = System.currentTimeMillis() + tokenResponse.getExpiresIn() * 1000;
-            logger.info("Get client credentials token {} with expire_in {} seconds", jwt, tokenResponse.getExpiresIn());
-        }
     }
 }

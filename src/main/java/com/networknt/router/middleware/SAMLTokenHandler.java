@@ -1,11 +1,15 @@
 package com.networknt.router.middleware;
 
-import com.networknt.client.oauth.*;
+import com.networknt.client.oauth.OauthHelper;
+import com.networknt.client.oauth.SAMLBearerRequest;
+import com.networknt.client.oauth.TokenResponse;
 import com.networknt.common.DecryptUtil;
 import com.networknt.config.Config;
-import com.networknt.exception.ClientException;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
+import com.networknt.monad.Failure;
+import com.networknt.monad.Result;
+import com.networknt.monad.Success;
 import com.networknt.utility.ModuleRegistry;
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
@@ -13,7 +17,9 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Map;
+
 import static com.networknt.client.Http2Client.CONFIG_SECRET;
 
 /**
@@ -87,9 +93,12 @@ public class SAMLTokenHandler implements MiddlewareHandler {
         // client credentials grant type with scopes for the particular client. (Can we just
         // assume that the subject token has the scope already?)
         logger.debug(exchange.toString());
-        String jwt = getSAMLBearerToken(exchange.getRequestHeaders().getFirst(SAMLAssertionHeader), exchange.getRequestHeaders().getFirst(JWTAssertionHeader));
-
-        exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + jwt);
+        Result<String> result = getSAMLBearerToken(exchange.getRequestHeaders().getFirst(SAMLAssertionHeader), exchange.getRequestHeaders().getFirst(JWTAssertionHeader));
+        if(result.isFailure()) {
+            OauthHelper.sendStatusToResponse(exchange, result.getError());
+            return;
+        }
+        exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + result.getResult());
         exchange.getRequestHeaders().remove(SAMLAssertionHeader);
         exchange.getRequestHeaders().remove(JWTAssertionHeader);
         Handler.next(exchange, next);
@@ -119,11 +128,15 @@ public class SAMLTokenHandler implements MiddlewareHandler {
     }
 
 
-    private String getSAMLBearerToken(String samlAssertion , String jwtAssertion) throws ClientException {
+    private Result<String> getSAMLBearerToken(String samlAssertion , String jwtAssertion) {
         SAMLBearerRequest tokenRequest = new SAMLBearerRequest(samlAssertion , jwtAssertion);
-        TokenResponse tokenResponse = OauthHelper.getTokenFromSaml(tokenRequest);
-        String jwt = tokenResponse.getAccessToken();
-        logger.debug("SAMLBearer Grant Type jwt: ", jwt);
-        return jwt ;
+        Result<TokenResponse> tokenResponse = OauthHelper.getTokenFromSaml(tokenRequest);
+        if(tokenResponse.isSuccess()) {
+            String jwt = tokenResponse.getResult().getAccessToken();
+            logger.debug("SAMLBearer Grant Type jwt: ", jwt);
+            return Success.of(jwt);
+        } else {
+            return Failure.of(tokenResponse.getError());
+        }
     }
 }
