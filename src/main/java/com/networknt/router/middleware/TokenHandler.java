@@ -67,6 +67,7 @@ public class TokenHandler implements MiddlewareHandler {
         if(result.isFailure()) {
             logger.error("cannot populate or renew jwt for client credential grant type");
             OauthHelper.sendStatusToResponse(exchange, result.getError());
+            return;
         }
         exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + cachedJwt.getJwt());
         Handler.next(exchange, next);

@@ -96,6 +96,7 @@ public class SAMLTokenHandler implements MiddlewareHandler {
         Result<String> result = getSAMLBearerToken(exchange.getRequestHeaders().getFirst(SAMLAssertionHeader), exchange.getRequestHeaders().getFirst(JWTAssertionHeader));
         if(result.isFailure()) {
             OauthHelper.sendStatusToResponse(exchange, result.getError());
+            return;
         }
         exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + result.getResult());
         exchange.getRequestHeaders().remove(SAMLAssertionHeader);
