@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.5.29](https://github.com/networknt/light-router/tree/1.5.29) (2019-02-16)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.28...1.5.29)
+
+**Implemented enhancements:**
+
+- Feat/\#41 exception handling [\#42](https://github.com/networknt/light-router/pull/42) ([BalloonWen](https://github.com/BalloonWen))
+
+**Closed issues:**
+
+- Support bypassing service discovery & load balance [\#38](https://github.com/networknt/light-router/issues/38)
+
 ## [1.5.28](https://github.com/networknt/light-router/tree/1.5.28) (2019-01-12)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.27...1.5.28)
 
