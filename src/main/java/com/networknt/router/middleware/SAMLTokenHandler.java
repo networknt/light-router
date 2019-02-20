@@ -130,7 +130,7 @@ public class SAMLTokenHandler implements MiddlewareHandler {
 
     private Result<String> getSAMLBearerToken(String samlAssertion , String jwtAssertion) {
         SAMLBearerRequest tokenRequest = new SAMLBearerRequest(samlAssertion , jwtAssertion);
-        Result<TokenResponse> tokenResponse = OauthHelper.getTokenFromSaml(tokenRequest);
+        Result<TokenResponse> tokenResponse = OauthHelper.getTokenFromSamlResult(tokenRequest);
         if(tokenResponse.isSuccess()) {
             String jwt = tokenResponse.getResult().getAccessToken();
             logger.debug("SAMLBearer Grant Type jwt: ", jwt);
