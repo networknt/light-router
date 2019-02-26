@@ -2,6 +2,7 @@ package com.networknt.router.middleware;
 
 import com.networknt.client.oauth.Jwt;
 import com.networknt.client.oauth.OauthHelper;
+import com.networknt.client.oauth.TokenManager;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
@@ -52,8 +53,6 @@ public class TokenHandler implements MiddlewareHandler {
     public static Map<String, Object> config = Config.getInstance().getJsonMapConfigNoCache(CONFIG_NAME);
     static Logger logger = LoggerFactory.getLogger(TokenHandler.class);
     private volatile HttpHandler next;
-    // Cached jwt token for this handler on behalf of a client.
-    private final Jwt cachedJwt = new Jwt();
     public TokenHandler() { }
 
     @Override
@@ -63,13 +62,13 @@ public class TokenHandler implements MiddlewareHandler {
         // We will keep this token in the Authorization header but create a new token with
         // client credentials grant type with scopes for the particular client. (Can we just
         // assume that the subject token has the scope already?)
-        Result result = OauthHelper.populateCCToken(cachedJwt);
+        Result<Jwt> result = TokenManager.getInstance().getJwt(new Jwt.Key());
         if(result.isFailure()) {
             logger.error("cannot populate or renew jwt for client credential grant type");
             OauthHelper.sendStatusToResponse(exchange, result.getError());
             return;
         }
-        exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + cachedJwt.getJwt());
+        exchange.getRequestHeaders().put(Headers.AUTHORIZATION, "Bearer " + result.getResult().getJwt());
         Handler.next(exchange, next);
     }
 
