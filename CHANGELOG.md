@@ -1,5 +1,18 @@
 # Change Log
 
+## [1.5.30](https://github.com/networknt/light-router/tree/1.5.30) (2019-02-21)
+[Full Changelog](https://github.com/networknt/light-router/compare/1.5.29...1.5.30)
+
+**Fixed bugs:**
+
+- Fixing backwards incompatible interface change in OauthHelper getToken and getTokenFromSaml [\#44](https://github.com/networknt/light-router/pull/44) ([BalloonWen](https://github.com/BalloonWen))
+
+**Closed issues:**
+
+- Router Auth Exception Handling [\#41](https://github.com/networknt/light-router/issues/41)
+- \(API 15\)Cache the JWT when the request contains the previous SAML. [\#31](https://github.com/networknt/light-router/issues/31)
+- Junit test class created for SAMLTokenHandler [\#27](https://github.com/networknt/light-router/issues/27)
+
 ## [1.5.29](https://github.com/networknt/light-router/tree/1.5.29) (2019-02-16)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.28...1.5.29)
 
