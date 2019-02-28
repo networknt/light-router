@@ -1,5 +1,6 @@
 package com.networknt.router.middleware;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,8 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.RoutingHandler;
 import io.undertow.util.Methods;
 
-public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
-    static final Logger logger = LoggerFactory.getLogger(PathPrefixServiceHandlerTest.class);
+public class ServiceDictHandlerTest extends BaseServiceHandlerTest{
+    static final Logger logger = LoggerFactory.getLogger(ServiceDictHandlerTest.class);
 
     static Undertow server = null;
 
@@ -29,9 +30,9 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
         if(server == null) {
             logger.info("starting server");
             HttpHandler handler = getTestHandler();
-            PathPrefixServiceHandler pathServiceHandler = new PathPrefixServiceHandler();
-            pathServiceHandler.setNext(handler);
-            handler = pathServiceHandler;
+            ServiceDictHandler serviceDictHandler = new ServiceDictHandler();
+            serviceDictHandler.setNext(handler);
+            handler = serviceDictHandler;
             HeaderHandler headerHandler = new HeaderHandler();
             headerHandler.setNext(handler);
             handler = headerHandler;
@@ -75,31 +76,38 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
                 });
     }
 
-
     @Test
     public void testFindServiceId() throws Exception {
         // Make test parametric when porting to junit5?
-        Map<String, String> expected = new HashMap<>();
-
+        Map<AbstractMap.SimpleEntry<String, String>, String> expected = new HashMap<>();
+        
         // Simple calls
-        expected.put("/v1/address/111", "party.address-1.0.0");
-        expected.put("/v1/address/whatever", "party.address-1.0.0");
-        expected.put("/v2/address", "party.address-2.0.0");
-        expected.put("/v1/contact", "party.contact-1.0.0");
+        expected.put(createPair("/v1/address/111", "get"), "party.address-1.0.0");
+        expected.put(createPair("/v1/address/whatever", "get"), "party.address-1.0.0");
+        expected.put(createPair("/v2/address", "get"), "party.address-2.0.0");
+        expected.put(createPair("/v1/contact", "post"), "party.contact-1.0.0");
 
         // Missing leading slash
-        expected.put("v2/address/irrelevant", "party.address-2.0.0");
-        expected.put("v1/contact/johnathan.strange", "party.contact-1.0.0");
+        expected.put(createPair("v2/address/irrelevant", "get"), "party.address-2.0.0");
+        expected.put(createPair("v1/contact/johnathan.strange", "post"), "party.contact-1.0.0");
 
         // Unmatched paths
-        expected.put("/v1/very/bad/path", null);
-        expected.put("/v1/contact-not-really/reject.me", null);
+        expected.put(createPair("/v1/very/bad/path", "get"), null);
+        expected.put(createPair("/v1/contact-not-really/reject.me", "post"), null);
 
-        Map<String, String> result = new HashMap<>();
-        for (String path : expected.keySet()) {
-            result.put(path, HandlerUtils.findServiceId(HandlerUtils.normalisePath(path), PathPrefixServiceHandler.mapping));
+        Map<AbstractMap.SimpleEntry<String, String>, String> result = new HashMap<>();
+        for (AbstractMap.SimpleEntry<String, String> pair : expected.keySet()) {
+            result.put(pair, HandlerUtils.findServiceId(toKey(pair), ServiceDictHandler.mappings));
         }
 
         Assert.assertEquals(expected, result);
+    }    
+    
+    private AbstractMap.SimpleEntry<String, String> createPair(String path, String method){
+    	return new AbstractMap.SimpleEntry<>(path, method);
+    }
+    
+    private String toKey(AbstractMap.SimpleEntry<String, String> pair) {
+    	return ServiceDictHandler.toInternalKey(pair.getValue(), pair.getKey());
     }
 }

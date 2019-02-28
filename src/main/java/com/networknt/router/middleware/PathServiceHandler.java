@@ -32,7 +32,7 @@ import java.util.Map;
  * of each request is saved into auditInfo object which is attached to the exchange for auditing.
  *
  * @author Steve Hu
- *
+ * @deprecated Please use {@link ServiceDictHandler}
  */
 public class PathServiceHandler implements MiddlewareHandler {
     public static final String CONFIG_NAME = "pathService";

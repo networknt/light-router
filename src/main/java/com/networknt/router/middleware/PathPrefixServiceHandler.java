@@ -31,6 +31,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:logi@logi.org">Logi Ragnarsson</a>
  * @author Steve Hu
+ * @deprecated Please use {@link ServiceDictHandler}
  */
 public class PathPrefixServiceHandler implements MiddlewareHandler {
     public static final String CONFIG_NAME = "pathPrefixService";
@@ -54,7 +55,7 @@ public class PathPrefixServiceHandler implements MiddlewareHandler {
         String serviceId = serviceIdHeader != null ? serviceIdHeader.peekFirst() : null;
         if(serviceId == null) {
             String requestPath = exchange.getRequestURI();
-            serviceId = findServiceId(requestPath);
+            serviceId = HandlerUtils.findServiceId(HandlerUtils.normalisePath(requestPath), mapping);
             if(serviceId == null) {
                 setExchangeStatus(exchange, STATUS_INVALID_REQUEST_PATH, requestPath);
                 return;
@@ -62,35 +63,6 @@ public class PathPrefixServiceHandler implements MiddlewareHandler {
             exchange.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, serviceId);
         }
         Handler.next(exchange, next);
-    }
-
-    /**
-     * Looks up the appropriate serviceId for a given requestPath taken directly from exchange.
-     * Returns null if the path does not map to a configured service.
-     */
-    String findServiceId(String requestPath) {
-        requestPath = normalisePath(requestPath);
-        if(logger.isDebugEnabled()) logger.debug("findServiceId for " + requestPath);
-        String serviceId = null;
-
-        for (Map.Entry<String, String> entry : mapping.entrySet()) {
-            String prefix = entry.getKey();
-            if(requestPath.startsWith(prefix)) {
-                if((requestPath.length() == prefix.length() || requestPath.charAt(prefix.length()) == '/')) {
-                    serviceId = entry.getValue();
-                    break;
-                }
-            }
-        }
-        if(logger.isDebugEnabled()) logger.debug("serviceId = " + serviceId);
-        return serviceId;
-    }
-
-    private static String normalisePath(String requestPath) {
-        if(!requestPath.startsWith("/")) {
-            return "/" + requestPath;
-        }
-        return requestPath;
     }
 
     @Override
