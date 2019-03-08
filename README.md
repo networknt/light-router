@@ -1,19 +1,18 @@
 # light-router
 
-
 A client-side service mesh router designed for the legacy system that cannot leverage the light-4j client module
 
-
-[Developer Chat](https://gitter.im/networknt/light-router) |
-[Documentation](https://www.networknt.com/tutorial/common/discovery/router/) |
-[Contribution Guide](CONTRIBUTING.md) |
-
+[Stack Overflow](https://stackoverflow.com/questions/tagged/light-4j) |
+[Google Group](https://groups.google.com/forum/#!forum/light-4j) |
+[Gitter Chat](https://gitter.im/networknt/light-router) |
+[Subreddit](https://www.reddit.com/r/lightapi/) |
+[Youtube Channel](https://www.youtube.com/channel/UCHCRMWJVXw8iB7zKxF55Byw) |
+[Documentation](https://doc.networknt.com/service/router/) |
+[Contribution Guide](https://doc.networknt.com/contribute/) |
 
 ### Framework usage workflow diagram
 
-
 ![workflow](docs/light-route.png)
-
 
 ### Light-router provides the Router Assisted Service Discovery
 
