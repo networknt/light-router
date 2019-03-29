@@ -12,6 +12,7 @@ public class RouterConfig {
     boolean rewriteHostHeader;
     boolean reuseXForwarded;
     int maxConnectionRetries;
+    String[] hostWhitelist;
 
     public RouterConfig() {
     }
@@ -51,4 +52,12 @@ public class RouterConfig {
     public int getMaxConnectionRetries() { return maxConnectionRetries; }
 
     public void setMaxConnectionRetries(int maxConnectionRetries) { this.maxConnectionRetries = maxConnectionRetries; }
+
+    public String[] getHostWhitelist() {
+        return hostWhitelist;
+    }
+
+    public void setHostWhitelist(String[] hostWhitelist) {
+        this.hostWhitelist = hostWhitelist;
+    }
 }

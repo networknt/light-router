@@ -1,7 +1,9 @@
 package io.undertow.server.handlers.proxy;
 
 import com.networknt.cluster.Cluster;
+import com.networknt.config.ConfigException;
 import com.networknt.httpstring.HttpStringConstants;
+import com.networknt.router.HostWhitelist;
 import com.networknt.service.SingletonServiceFactory;
 import io.undertow.client.UndertowClient;
 import io.undertow.server.HttpServerExchange;
@@ -14,6 +16,7 @@ import org.xnio.ssl.XnioSsl;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +33,7 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
 
     private static final AttachmentKey<AttachmentList<Host>> ATTEMPTED_HOSTS = AttachmentKey.createList(Host.class);
     private static Cluster cluster = SingletonServiceFactory.getBean(Cluster.class);
+    private static final HostWhitelist HOST_WHITELIST = SingletonServiceFactory.getBean(HostWhitelist.class);
 
     /**
      * Time in seconds between retries for problem servers
@@ -145,16 +149,21 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
 
     @Override
     public void getConnection(ProxyTarget target, HttpServerExchange exchange, final ProxyCallback<ProxyConnection> callback, long timeout, TimeUnit timeUnit) {
-        Host host = selectHost(exchange);
-        if (host == null) {
-            // give it second chance for service discovery again when problem occurs.
-            host = selectHost(exchange);
-        }
-        if (host == null) {
-            callback.couldNotResolveBackend(exchange);
-        } else {
-            exchange.addToAttachmentList(ATTEMPTED_HOSTS, host);
-            host.connectionPool.connect(target, exchange, callback, timeout, timeUnit, false);
+        try {
+            Host host = selectHost(exchange);
+            if (host == null) {
+                // give it second chance for service discovery again when problem occurs.
+                host = selectHost(exchange);
+            }
+            if (host == null) {
+                callback.couldNotResolveBackend(exchange);
+            } else {
+                exchange.addToAttachmentList(ATTEMPTED_HOSTS, host);
+                host.connectionPool.connect(target, exchange, callback, timeout, timeUnit, false);
+            }
+        } catch (Exception ex) {
+            exchange.setReasonPhrase(ex.getMessage());
+            callback.failed(exchange);
         }
     }
 
@@ -162,14 +171,35 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         // get serviceId, env tag and hash key from header.
         HeaderMap headers = exchange.getRequestHeaders();
         String serviceId = headers.getFirst(HttpStringConstants.SERVICE_ID);
+        String serviceUrl = headers.getFirst(HttpStringConstants.SERVICE_URL);
         String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
-        String key = serviceId + envTag;
+        String key = (serviceUrl != null ? serviceUrl : serviceId) + envTag;
 
         AttachmentList<Host> attempted = exchange.getAttachment(ATTEMPTED_HOSTS);
         Host[] hostArray = this.hosts.get(key);
         if (hostArray == null || hostArray.length == 0) {
             // this must be the first this service is called since the router is started. discover here.
-            addHosts(serviceId, envTag);
+            if (serviceUrl != null) {
+                try {
+                    URI uri = new URI(serviceUrl);
+                    if (HOST_WHITELIST != null) {
+                        if (HOST_WHITELIST.isHostAllowed(uri)) {
+                            this.hosts.put(key, new Host[] {new Host(serviceId, bindAddress, uri, ssl, options) });
+                        } else {
+                            throw new RuntimeException(String.format("Route to %s is not allowed in the host whitelist", serviceUrl));
+                        }
+
+                    } else {
+                        throw new ConfigException(
+                                String.format("Host Whitelist must be enabled to support route based on %s in Http header",
+                                        HttpStringConstants.SERVICE_URL));
+                    }
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                addHosts(serviceId, envTag);
+            }
             hostArray = this.hosts.get(key);
         }
 
