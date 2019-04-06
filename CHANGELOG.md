@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.6.0](https://github.com/networknt/light-router/tree/1.6.0) (2019-04-05)
+
+
+**Merged pull requests:**
+
+
+- Issue \#38: Support bypassing service discovery & load balance [\#39](https://github.com/networknt/light-router/pull/39) ([jsu216](https://github.com/jsu216))
 ## [1.5.32](https://github.com/networknt/light-router/tree/1.5.32) (2019-03-14)
 [Full Changelog](https://github.com/networknt/light-router/compare/1.5.31...1.5.32)
 
