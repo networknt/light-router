@@ -11,6 +11,9 @@ public class HandlerUtils {
     /**
      * Looks up the appropriate serviceId for a given requestPath taken directly from exchange.
      * Returns null if the path does not map to a configured service.
+     * @param searchKey search key
+     * @param mapping a map of prefix and service id
+     * @return serviceId that is found
      */
     public static String findServiceId(String searchKey, Map<String, String> mapping) {
         if(logger.isDebugEnabled()) logger.debug("findServiceId for " + searchKey);

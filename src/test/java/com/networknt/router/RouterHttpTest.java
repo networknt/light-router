@@ -205,6 +205,7 @@ public class RouterHttpTest {
         final Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(10);
         final ClientConnection connection;
+        logger.debug("url = " + url);
         try {
             connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, enableHttp2 ? OptionMap.create(UndertowOptions.ENABLE_HTTP2, true): OptionMap.EMPTY).get();
         } catch (Exception e) {
@@ -235,6 +236,7 @@ public class RouterHttpTest {
         }
         for (final AtomicReference<ClientResponse> reference : references) {
             String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
+            if(logger.isDebugEnabled()) logger.debug("body = " + body);
             Assert.assertTrue(body.contains("Server"));
         }
     }
