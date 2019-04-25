@@ -1,5 +1,5 @@
 # Enable header handler or not, default to false
-enabled: false
+enabled: true
 # Request header manipulation
 request:
   # Remove all the headers listed here
