@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.6.1](https://github.com/networknt/light-router/tree/1.6.1) (2019-05-03)
+
+
+**Merged pull requests:**
+
+
+- fixes \#51 rollback the header.yml to enable direct registry header [\#52](https://github.com/networknt/light-router/pull/52) ([stevehu](https://github.com/stevehu))
+- fixes \#49 disable the header.xml to remove the dev env tag [\#50](https://github.com/networknt/light-router/pull/50) ([stevehu](https://github.com/stevehu))
+- find service Ids using request path and request method - \#29 [\#45](https://github.com/networknt/light-router/pull/45) ([dz-1](https://github.com/dz-1))
+- fixes \#47 use only verison.light-4j for light modules [\#48](https://github.com/networknt/light-router/pull/48) ([stevehu](https://github.com/stevehu))
 ## [1.6.0](https://github.com/networknt/light-router/tree/1.6.0) (2019-04-05)
 
 
