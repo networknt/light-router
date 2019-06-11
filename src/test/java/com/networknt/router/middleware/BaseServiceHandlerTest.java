@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.networknt.status.exception.ClientException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,7 +14,6 @@ import org.xnio.IoUtils;
 import org.xnio.OptionMap;
 
 import com.networknt.client.Http2Client;
-import com.networknt.exception.ClientException;
 import com.networknt.httpstring.HttpStringConstants;
 
 import io.undertow.UndertowOptions;
