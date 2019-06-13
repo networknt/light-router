@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.networknt.status.exception.ClientException;
+import com.networknt.exception.ClientException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

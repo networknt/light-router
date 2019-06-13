@@ -22,7 +22,7 @@ import com.networknt.common.SecretConstants;
 import com.networknt.config.Config;
 import com.networknt.httpstring.HttpStringConstants;
 import com.networknt.server.ServerConfig;
-import com.networknt.status.exception.ClientException;
+import com.networknt.exception.ClientException;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.client.ClientConnection;
