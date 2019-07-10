@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.0.2](https://github.com/networknt/light-router/tree/2.0.2) (2019-07-10)
+
+
+**Merged pull requests:**
+
+
+- fixes \#60 update Dockerfile and build.sh to image publishing [\#61](https://github.com/networknt/light-router/pull/61) ([stevehu](https://github.com/stevehu))
+- fixes \#58 add Zulu and Debug dockerfile [\#59](https://github.com/networknt/light-router/pull/59) ([stevehu](https://github.com/stevehu))
+- fixes \#56 update Dockerfile for jdk11 [\#57](https://github.com/networknt/light-router/pull/57) ([stevehu](https://github.com/stevehu))
 ## [2.0.1](https://github.com/networknt/light-router/tree/2.0.1) (2019-06-13)
 
 
