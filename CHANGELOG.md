@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.4](https://github.com/networknt/light-router/tree/2.0.4) (2019-08-16)
+
+
+**Merged pull requests:**
+
+
+- fixes \#63 upgrade jackson-databind to 2.9.9.3 [\#64](https://github.com/networknt/light-router/pull/64) ([stevehu](https://github.com/stevehu))
 ## [2.0.3](https://github.com/networknt/light-router/tree/2.0.3) (2019-07-31)
 
 
