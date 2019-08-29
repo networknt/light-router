@@ -16,7 +16,7 @@
 
 package com.networknt.router.middleware;
 
-import com.networknt.audit.AuditHandler;
+import com.networknt.httpstring.AttachmentConstants;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
@@ -68,7 +68,7 @@ public class PathServiceHandler implements MiddlewareHandler {
 
     @Override
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
-        Map<String, Object> auditInfo = exchange.getAttachment(AuditHandler.AUDIT_INFO);
+        Map<String, Object> auditInfo = exchange.getAttachment(AttachmentConstants.AUDIT_INFO);
         if(auditInfo != null) {
             String endpoint = (String)auditInfo.get(Constants.ENDPOINT_STRING);
             if(logger.isDebugEnabled()) logger.debug("endpoint = " + endpoint);
