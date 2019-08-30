@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.5](https://github.com/networknt/light-router/tree/2.0.5) (2019-08-30)
+
+
+**Merged pull requests:**
+
+
+- fixes \#65 move AUDIT_INFO from AuditHandler to AttachmentConstants [\#66](https://github.com/networknt/light-router/pull/66) ([stevehu](https://github.com/stevehu))
 ## [2.0.4](https://github.com/networknt/light-router/tree/2.0.4) (2019-08-16)
 
 
