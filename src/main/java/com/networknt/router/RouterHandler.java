@@ -43,7 +43,7 @@ public class RouterHandler implements HttpHandler {
         // As we are building a client side router for the light platform, the assumption is the server will
         // be on HTTP 2.0 TSL always. No need to handle HTTP 1.1 case here.
         LoadBalancingRouterProxyClient client = new LoadBalancingRouterProxyClient();
-        if(config.httpsEnabled) client.setSsl(Http2Client.SSL);
+        if(config.httpsEnabled) client.setSsl(Http2Client.getInstance().getDefaultXnioSsl());
         if(config.http2Enabled) {
             client.setOptionMap(OptionMap.create(UndertowOptions.ENABLE_HTTP2, true));
         } else {
