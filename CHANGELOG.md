@@ -1,9 +1,11 @@
 # Change Log
 
-## [1.6.14](https://github.com/networknt/light-router/tree/1.6.14) (2020-01-31)
+## [1.6.14](https://github.com/networknt/light-router/tree/1.6.14) (2020-02-01)
 
 
 **Merged pull requests:**
+
+
 
 
 ## [1.6.13](https://github.com/networknt/light-router/tree/1.6.13) (2019-12-31)
