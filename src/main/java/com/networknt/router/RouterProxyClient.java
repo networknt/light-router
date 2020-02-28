@@ -61,7 +61,7 @@ public class RouterProxyClient implements ProxyClient {
 
     private final Http2Client client;
     private static final ProxyTarget PROXY_TARGET = new ProxyTarget() {};
-    private static final HostWhitelist HOST_WHITELIST = SingletonServiceFactory.getBean(HostWhitelist.class);
+    private static final HostWhitelist HOST_WHITELIST = new HostWhitelist();
 
     public RouterProxyClient() {
         client = Http2Client.getInstance();

@@ -29,6 +29,8 @@ import io.undertow.util.AttachmentKey;
 import io.undertow.util.AttachmentList;
 import io.undertow.util.CopyOnWriteMap;
 import io.undertow.util.HeaderMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xnio.OptionMap;
 import org.xnio.ssl.XnioSsl;
 
@@ -48,10 +50,10 @@ import static io.undertow.server.handlers.proxy.ProxyConnectionPool.Availability
  * @author Steve Hu
  */
 public class LoadBalancingRouterProxyClient implements ProxyClient {
-
+    private static Logger logger = LoggerFactory.getLogger(LoadBalancingRouterProxyClient.class);
     private static final AttachmentKey<AttachmentList<Host>> ATTEMPTED_HOSTS = AttachmentKey.createList(Host.class);
     private static Cluster cluster = SingletonServiceFactory.getBean(Cluster.class);
-    private static final HostWhitelist HOST_WHITELIST = SingletonServiceFactory.getBean(HostWhitelist.class);
+    private static final HostWhitelist HOST_WHITELIST = new HostWhitelist();
 
     /**
      * Time in seconds between retries for problem servers
@@ -180,6 +182,7 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
                 host.connectionPool.connect(target, exchange, callback, timeout, timeUnit, false);
             }
         } catch (Exception ex) {
+            logger.error("Failed to get connection", ex);
             exchange.setReasonPhrase(ex.getMessage());
             callback.failed(exchange);
         }
@@ -190,6 +193,8 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         HeaderMap headers = exchange.getRequestHeaders();
         String serviceId = headers.getFirst(HttpStringConstants.SERVICE_ID);
         String serviceUrl = headers.getFirst(HttpStringConstants.SERVICE_URL);
+        // remove the header here in case the downstream service is another light-router instance.
+        if(serviceUrl != null) headers.remove(HttpStringConstants.SERVICE_URL);
         String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
         String key = (serviceUrl != null ? serviceUrl : serviceId) + envTag;
 

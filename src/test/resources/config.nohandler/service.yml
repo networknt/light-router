@@ -19,9 +19,6 @@ singletons:
 # HandlerProvider implementation
 - com.networknt.handler.HandlerProvider:
   - com.networknt.router.RouterHandlerProvider
-# Enable host whitelist when using service_url in header
-- com.networknt.router.HostWhitelist:
-  - com.networknt.router.HostWhitelist
 # StartupHookProvider implementations, there are one to many and they are called in the same sequence defined.
 # - com.networknt.server.StartupHookProvider:
   # - com.networknt.server.Test1StartupHook
