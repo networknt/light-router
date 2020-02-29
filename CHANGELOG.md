@@ -9,6 +9,8 @@
 - fixes \#73 create static HostWhiteList and remove service_url [\#74](https://github.com/networknt/light-router/pull/74) ([stevehu](https://github.com/stevehu))
 - fixes \#71 update Dockerfile-Debug to allow all addresses to bind [\#72](https://github.com/networknt/light-router/pull/72) ([stevehu](https://github.com/stevehu))
 - fixes \#69 update Dockerfile to resolve jlink not found [\#70](https://github.com/networknt/light-router/pull/70) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.0.10](https://github.com/networknt/light-router/tree/2.0.10) (2020-02-01)
 
 
