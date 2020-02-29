@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.6.17](https://github.com/networknt/light-router/tree/1.6.17) (2020-02-29)
+
+
+**Merged pull requests:**
+
+
+- fixes \#73 create static HostWhiteList and remove service_url [\#74](https://github.com/networknt/light-router/pull/74) ([stevehu](https://github.com/stevehu))
 ## [1.6.16](https://github.com/networknt/light-router/tree/1.6.16) (2020-02-06)
 
 
