@@ -80,7 +80,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.light-4j>2.0.13-SNAPSHOT</version.light-4j>
         <version.jackson>2.10.0</version.jackson>
-        <version.jackson-databind>2.10.0</version.jackson-databind>
         <version.slf4j>1.7.25</version.slf4j>
         <version.jose4j>0.6.3</version.jose4j>
         <version.logback>1.2.3</version.logback>
@@ -177,6 +176,11 @@
         </dependency>
         <dependency>
             <groupId>com.networknt</groupId>
+            <artifactId>jaeger-tracing</artifactId>
+            <version>${version.light-4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.networknt</groupId>
             <artifactId>server</artifactId>
             <version>${version.light-4j}</version>
         </dependency>
@@ -213,11 +217,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${version.jackson-databind}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
             <version>${version.jackson}</version>
         </dependency>
         <dependency>
