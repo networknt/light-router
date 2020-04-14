@@ -41,6 +41,7 @@ import io.undertow.server.handlers.proxy.ProxyHandler;
  * per downstream service.
  *
  */
+@Deprecated
 public class RouterHandlerProvider implements HandlerProvider {
     static final String CONFIG_NAME = "router";
     static RouterConfig config = (RouterConfig)Config.getInstance().getJsonObjectConfig(CONFIG_NAME, RouterConfig.class);

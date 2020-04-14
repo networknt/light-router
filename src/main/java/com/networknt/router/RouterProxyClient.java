@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
  * @author Steve Hu
  *
  */
+@Deprecated
 public class RouterProxyClient implements ProxyClient {
     // For every unique serviceId the client is connecting to, there is a Connection that
     // connects to one of the target servers discovered from Consul etc. The corresponding
