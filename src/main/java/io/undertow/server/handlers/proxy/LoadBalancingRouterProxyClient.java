@@ -18,11 +18,21 @@
 
 package io.undertow.server.handlers.proxy;
 
+import com.networknt.client.ClientConfig;
+import com.networknt.client.ServerExchangeCarrier;
 import com.networknt.cluster.Cluster;
 import com.networknt.config.ConfigException;
+import com.networknt.httpstring.AttachmentConstants;
 import com.networknt.httpstring.HttpStringConstants;
+import com.networknt.jaeger.tracing.JaegerStartupHookProvider;
 import com.networknt.router.HostWhitelist;
+import com.networknt.server.Server;
 import com.networknt.service.SingletonServiceFactory;
+import io.jaegertracing.internal.JaegerTracer;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
+import io.opentracing.propagation.Format;
+import io.opentracing.tag.Tags;
 import io.undertow.client.UndertowClient;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.AttachmentKey;
@@ -197,7 +207,6 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         if(serviceUrl != null) headers.remove(HttpStringConstants.SERVICE_URL);
         String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
         String key = (serviceUrl != null ? serviceUrl : serviceId) + envTag;
-
         AttachmentList<Host> attempted = exchange.getAttachment(ATTEMPTED_HOSTS);
         Host[] hostArray = this.hosts.get(key);
         if (hostArray == null || hostArray.length == 0) {
@@ -236,6 +245,8 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
             if (attempted == null || !attempted.contains(selected)) {
                 ProxyConnectionPool.AvailabilityType available = selected.connectionPool.available();
                 if (available == AVAILABLE) {
+                    // inject the jaeger tracer.
+                    injectTracer(exchange, selected);
                     return selected;
                 } else if (available == FULL && full == null) {
                     full = selected;
@@ -246,6 +257,8 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
             host = (host + 1) % hostArray.length;
         } while (host != startHost);
         if (full != null) {
+            // inject the jaeger tracer.
+            injectTracer(exchange, full);
             return full;
         }
         if (problem != null) {
@@ -253,6 +266,22 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         }
         //no available hosts
         return null;
+    }
+
+    private void injectTracer(HttpServerExchange exchange, Host host) {
+        if(ClientConfig.get().isInjectOpenTracing()) {
+            Tracer tracer = exchange.getAttachment(AttachmentConstants.EXCHANGE_TRACER);
+            Span rootSpan = exchange.getAttachment(AttachmentConstants.ROOT_SPAN);
+            if(tracer != null) {
+                tracer.activateSpan(rootSpan);
+                Tags.SPAN_KIND.set(tracer.activeSpan(), Tags.SPAN_KIND_CLIENT);
+                Tags.HTTP_METHOD.set(tracer.activeSpan(), exchange.getRequestMethod().toString());
+                Tags.HTTP_URL.set(tracer.activeSpan(), exchange.getRequestURI());
+                Tags.PEER_PORT.set(tracer.activeSpan(), host.uri.getPort());
+                Tags.PEER_HOSTNAME.set(tracer.activeSpan(), host.uri.getHost());
+                tracer.inject(tracer.activeSpan().context(), Format.Builtin.HTTP_HEADERS, new ServerExchangeCarrier(exchange));
+            }
+        }
     }
 
     /**
