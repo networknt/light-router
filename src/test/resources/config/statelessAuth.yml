@@ -14,8 +14,6 @@ requestPath: /v1/authorization
 cookieDomain: localhost
 # Cookie path
 cookiePath: /
-# Cookie maxAge
-cookieMaxAge: 3600
 # Cookie secured
 cookieSecure: false
 
