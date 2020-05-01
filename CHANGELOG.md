@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.0.13](https://github.com/networknt/light-router/tree/2.0.13) (2020-05-01)
+
+
+**Merged pull requests:**
+
+
+- fixes \#82 remove cookieMaxAge from statelessAuth.yml [\#83](https://github.com/networknt/light-router/pull/83) ([stevehu](https://github.com/stevehu))
+- fixes \#80 inject Jaeger tracer in the LoadBalancingRouterProxyClient [\#81](https://github.com/networknt/light-router/pull/81) ([stevehu](https://github.com/stevehu))
+- fixes \#78 deprecated RouterProxyClient and RouterHandlerProvider [\#79](https://github.com/networknt/light-router/pull/79) ([stevehu](https://github.com/stevehu))
+- fixes \#76 add jaeger tracing dependency to the light-router [\#77](https://github.com/networknt/light-router/pull/77) ([stevehu](https://github.com/stevehu))
 ## [2.0.12](https://github.com/networknt/light-router/tree/2.0.12) (2020-03-31)
 
 
