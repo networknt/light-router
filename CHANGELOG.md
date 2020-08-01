@@ -6,6 +6,8 @@
 **Merged pull requests:**
 
 
+
+
 ## [2.0.15](https://github.com/networknt/light-router/tree/2.0.15) (2020-07-01)
 
 
