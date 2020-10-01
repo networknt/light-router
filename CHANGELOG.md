@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.18](https://github.com/networknt/light-router/tree/2.0.18) (2020-10-01)
+
+
+**Merged pull requests:**
+
+
+- fixes \#88 add google, facebook and light-kafka dependencies [\#89](https://github.com/networknt/light-router/pull/89) ([stevehu](https://github.com/stevehu))
 ## [2.0.17](https://github.com/networknt/light-router/tree/2.0.17) (2020-08-28)
 
 
