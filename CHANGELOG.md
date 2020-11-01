@@ -7,6 +7,8 @@
 
 
 - Bump junit from 4.12 to 4.13.1 [\#91](https://github.com/networknt/light-router/pull/91) ([dependabot](https://github.com/apps/dependabot))
+
+
 ## [2.0.18](https://github.com/networknt/light-router/tree/2.0.18) (2020-10-01)
 
 
