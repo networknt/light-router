@@ -19,7 +19,6 @@ package com.networknt.router.middleware;
 import com.networknt.client.oauth.OauthHelper;
 import com.networknt.client.oauth.SAMLBearerRequest;
 import com.networknt.client.oauth.TokenResponse;
-import com.networknt.common.DecryptUtil;
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;
 import com.networknt.handler.MiddlewareHandler;
@@ -35,8 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-
-import static com.networknt.client.Http2Client.CONFIG_SECRET;
 
 /**
  * This is a middleware handler that is responsible for getting a JWT access token from
@@ -74,7 +71,6 @@ public class SAMLTokenHandler implements MiddlewareHandler {
 
     static Map<String, Object> clientConfig;
     static Map<String, Object> tokenConfig;
-    static Map<String, Object> secretConfig;
     static boolean oauthHttp2Support;
 
     private final Object lock = new Object();
@@ -91,13 +87,6 @@ public class SAMLTokenHandler implements MiddlewareHandler {
         if(securityConfig != null) {
             Boolean b = (Boolean)securityConfig.get(OAUTH_HTTP2_SUPPORT);
             oauthHttp2Support = (b == null ? false : b.booleanValue());
-        }
-
-        Map<String, Object> secretMap = Config.getInstance().getJsonMapConfig(CONFIG_SECRET);
-        if(secretMap != null) {
-            secretConfig = DecryptUtil.decryptMap(secretMap);
-        } else {
-            throw new ExceptionInInitializerError("Could not locate secret.yml");
         }
     }
 
