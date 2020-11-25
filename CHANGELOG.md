@@ -9,6 +9,8 @@
 - fixes \#96 update LoadBalancingRouterProxyClient to support the evn tag [\#97](https://github.com/networknt/light-router/pull/97) ([stevehu](https://github.com/stevehu))
 - fixes \#94 update server.yml to add keystore and truststore passwords [\#95](https://github.com/networknt/light-router/pull/95) ([stevehu](https://github.com/stevehu))
 - fixes \#92 update test case to add passwords to server.yml and client.yml [\#93](https://github.com/networknt/light-router/pull/93) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.0.20](https://github.com/networknt/light-router/tree/2.0.20) (2020-11-05)
 
 
