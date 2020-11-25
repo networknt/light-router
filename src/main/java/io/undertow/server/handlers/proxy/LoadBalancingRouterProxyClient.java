@@ -24,11 +24,8 @@ import com.networknt.cluster.Cluster;
 import com.networknt.config.ConfigException;
 import com.networknt.httpstring.AttachmentConstants;
 import com.networknt.httpstring.HttpStringConstants;
-import com.networknt.jaeger.tracing.JaegerStartupHookProvider;
 import com.networknt.router.HostWhitelist;
-import com.networknt.server.Server;
 import com.networknt.service.SingletonServiceFactory;
-import io.jaegertracing.internal.JaegerTracer;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
@@ -161,7 +158,7 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
     }
 
     public synchronized void addHosts(final String serviceId, final String envTag) {
-        String key = serviceId + envTag;
+        String key = envTag == null ? serviceId : serviceId + "|" + envTag;
         List<URI> uris = cluster.services(ssl == null ? "http" : "https", serviceId, envTag);
         hosts.remove(key);
         Host[] newHosts = new Host[uris.size()];
@@ -206,7 +203,7 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
         // remove the header here in case the downstream service is another light-router instance.
         if(serviceUrl != null) headers.remove(HttpStringConstants.SERVICE_URL);
         String envTag = headers.getFirst(HttpStringConstants.ENV_TAG);
-        String key = (serviceUrl != null ? serviceUrl : serviceId) + envTag;
+        String key = envTag == null ?  (serviceUrl != null ? serviceUrl : serviceId) :  (serviceUrl != null ? serviceUrl : serviceId) + "|" + envTag;
         AttachmentList<Host> attempted = exchange.getAttachment(ATTEMPTED_HOSTS);
         Host[] hostArray = this.hosts.get(key);
         if (hostArray == null || hostArray.length == 0) {

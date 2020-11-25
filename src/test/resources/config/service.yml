@@ -7,7 +7,7 @@ singletons:
       port: 8080
       path: direct
       parameters:
-        com.networknt.test-1.0.0: https://localhost:8081,https://localhost:8082,https://localhost:8083
+        com.networknt.test-1.0.0: https://localhost:8081?environment=dev,https://localhost:8082?environment=dev,https://localhost:8083?environment=dev
 - com.networknt.registry.Registry:
   - com.networknt.registry.support.DirectRegistry
 - com.networknt.balance.LoadBalance:
