@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.24](https://github.com/networknt/light-router/tree/2.0.24) (2021-02-24)
+
+
+**Merged pull requests:**
+
+
+- Bump jackson-databind from 2.10.4 to 2.10.5.1 [\#98](https://github.com/networknt/light-router/pull/98) ([dependabot](https://github.com/apps/dependabot))
 ## [2.0.23](https://github.com/networknt/light-router/tree/2.0.23) (2021-01-29)
 
 
