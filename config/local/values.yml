@@ -20,3 +20,72 @@ serviceDict.mapping:
   /v1/contact@post: party.contact-1.0.0
 
 server.httpsPort: 9443
+
+## handler yaml
+handler.enabled: true
+
+handler.handlers:
+  - com.networknt.exception.ExceptionHandler@exception
+  - com.networknt.traceability.TraceabilityHandler@traceability
+  - com.networknt.correlation.CorrelationHandler@correlation
+  - com.networknt.cors.CorsHttpHandler@cors
+  - com.networknt.header.HeaderHandler@header
+  # Direct requests to named services based on the request path
+  - com.networknt.router.middleware.ServiceDictHandler@path
+  - com.networknt.router.RouterHandler@router
+  # - com.networknt.resource.VirtualHostHandler@virtual
+  # Customer business domain specific cross-cutting concerns handlers
+  # - com.example.validator.CustomizedValidator@custvalidator
+  # Framework endpoint handlers
+  - com.networknt.health.HealthGetHandler@health
+  - com.networknt.info.ServerInfoGetHandler@info
+
+handler.chains:
+  default:
+    - exception
+    #- metrics
+    - traceability
+    - correlation
+    - cors
+    - header
+    - path
+    - router
+    #- specification
+    #- security
+    #- body
+    #- audit
+    #- sanitizer
+    #- validator
+
+handler.paths:
+  - path: '/*'
+    method: 'GET'
+    exec:
+      - default
+  - path: '/*'
+    method: 'POST'
+    exec:
+      - default
+  - path: '/*'
+    method: 'PUT'
+    exec:
+      - default
+  - path: '/*'
+    method: 'DELETE'
+    exec:
+      - default
+  - path: '/*'
+    method: 'PATCH'
+    exec:
+      - default
+
+  - path: '/health/com.networknt.router-0.1.0'
+    method: 'get'
+    exec:
+      - health
+
+  # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0 or Basic Auth
+  - path: '/server/info'
+    method: 'get'
+    exec:
+      - info
