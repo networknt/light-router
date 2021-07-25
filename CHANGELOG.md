@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.0.29](https://github.com/networknt/light-router/tree/2.0.29) (2021-07-25)
+
+
+**Merged pull requests:**
+
+
+- Issue103 [\#104](https://github.com/networknt/light-router/pull/104) ([chenyan71](https://github.com/chenyan71))
+- fixes \#101 [\#102](https://github.com/networknt/light-router/pull/102) ([chenyan71](https://github.com/chenyan71))
+- fixes \#99 update TestServer to replace Server.config with Server.getS… [\#100](https://github.com/networknt/light-router/pull/100) ([stevehu](https://github.com/stevehu))
 ## [2.0.28](https://github.com/networknt/light-router/tree/2.0.28) (2021-06-27)
 
 
