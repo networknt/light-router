@@ -1,12 +1,14 @@
 # Change Log
 
-## [2.0.30](https://github.com/networknt/light-router/tree/2.0.30) (2021-08-23)
+## [2.0.30](https://github.com/networknt/light-router/tree/2.0.30) (2021-08-24)
 
 
 **Merged pull requests:**
 
 
 - fixes light4j issue \#1023 [\#105](https://github.com/networknt/light-router/pull/105) ([GavinChenYan](https://github.com/GavinChenYan))
+
+
 ## [2.0.29](https://github.com/networknt/light-router/tree/2.0.29) (2021-07-25)
 
 
