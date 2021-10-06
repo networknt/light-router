@@ -81,7 +81,7 @@ public class SAMLTokenTest {
         if(server1 == null) {
             logger.info("starting server1");
             server1 = Undertow.builder()
-                    .addHttpsListener(8081, "localhost", sslContext)
+                    .addHttpsListener(18081, "localhost", sslContext)
                     .setHandler(new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -97,7 +97,7 @@ public class SAMLTokenTest {
         if(server2 == null) {
             logger.info("starting server2");
             server2 = Undertow.builder()
-                    .addHttpsListener(8082, "localhost", sslContext)
+                    .addHttpsListener(18082, "localhost", sslContext)
                     .setHandler(new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -113,7 +113,7 @@ public class SAMLTokenTest {
         if(server3 == null) {
             logger.info("starting server3");
             server3 = Undertow.builder()
-                    .addHttpsListener(8083, "localhost", sslContext)
+                    .addHttpsListener(18083, "localhost", sslContext)
                     .setHandler(new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
