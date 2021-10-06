@@ -80,7 +80,7 @@ public class RouterHttpTest {
         if(server1 == null) {
             logger.info("starting server1");
             Undertow.Builder builder1 = Undertow.builder()
-                    .addHttpsListener(8081, "localhost", sslContext)
+                    .addHttpsListener(18081, "localhost", sslContext)
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -98,7 +98,7 @@ public class RouterHttpTest {
         if(server2 == null) {
             logger.info("starting server2");
             Undertow.Builder builder2 = Undertow.builder()
-                    .addHttpsListener(8082, "localhost", sslContext)
+                    .addHttpsListener(18082, "localhost", sslContext)
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -117,7 +117,7 @@ public class RouterHttpTest {
         if(server3 == null) {
             logger.info("starting server3");
             Undertow.Builder builder3 = Undertow.builder()
-                    .addHttpsListener(8083, "localhost", sslContext)
+                    .addHttpsListener(18083, "localhost", sslContext)
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -175,7 +175,7 @@ public class RouterHttpTest {
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
         try {
-            connection = client.connect(new URI("https://localhost:8081"), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+            connection = client.connect(new URI("https://localhost:18081"), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
         } catch (Exception e) {
             throw new ClientException(e);
         }
