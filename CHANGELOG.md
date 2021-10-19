@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.0.32](https://github.com/networknt/light-router/tree/2.0.32) (2021-10-19)
+
+
+**Merged pull requests:**
+
+
+- fixes \#108 update test server ports to avoid conflicts [\#109](https://github.com/networknt/light-router/pull/109) ([stevehu](https://github.com/stevehu))
+- \#106 externalize configs [\#107](https://github.com/networknt/light-router/pull/107) ([wswjwjccjlu](https://github.com/wswjwjccjlu))
+
+
 ## [2.0.31](https://github.com/networknt/light-router/tree/2.0.31) (2021-09-22)
 
 
