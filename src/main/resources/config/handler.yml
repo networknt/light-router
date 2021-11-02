@@ -54,6 +54,7 @@ handlers:
   - com.networknt.health.HealthGetHandler@health
   - com.networknt.info.ServerInfoGetHandler@info
   # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
+  - com.networknt.auth.StatelessAuthHandler@stateless
 
 chains:
   default:
@@ -62,6 +63,7 @@ chains:
     - traceability
     - correlation
     - cors
+    - stateless
     - header
     - path
     - router
