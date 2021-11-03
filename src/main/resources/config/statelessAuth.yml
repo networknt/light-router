@@ -1,0 +1,24 @@
+# This handler is generic request handler for the OAuth 2.0 provider authorization code redirect.
+# It receives the auth code and goes to the OAuth 2.0 provider to get the subject token. The jwt
+# token is then sent to the browser with two cookies with splitting header/payload and signature.
+# Another options is to keep the jwt in session and return sessionId to the browser. In either
+# case, the csrf token will be send with a separate cookie.
+---
+# Indicate if the StatelessAuthHandler is enabled or not
+enabled: ${statelessAuth.enabled:false}
+# Once Authorization is done, which path the UI is redirected.
+redirectUri: ${statelessAuth.redirectUri:https://lightapi.net/#/app/dashboard}
+# An optional redirect uri if the user deny or cancel the authorization on the Consent page. Default to redirectUri if missing.
+denyUri: ${statelessAuth.denyUri:https://lightapi.net/#/app/dashboard}
+# Request path for the authorization code handling.
+authPath: ${statelessAuth.authPath:/authorization}  /authorization
+# Request path for the deny authorization handling to remove HttpOnly access-token and other cookies
+logoutPath: ${statelessAuth.logoutPath:/logout}
+# Cookie domain
+cookieDomain: ${statelessAuth.cookieDomain:lightapi.net}
+# Cookie path
+cookiePath: ${statelessAuth.cookiePath:/}
+# Login uri, redirect to it once session is expired
+cookieTimeoutUri: ${statelessAuth.cookieTimeoutUri:/}
+# Cookie secured
+cookieSecure: ${statelessAuth.cookieSecure:true}
