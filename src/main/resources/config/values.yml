@@ -1,21 +1,8 @@
-service.singletons:
-  - com.networknt.registry.URL:
-      - com.networknt.registry.URLImpl:
-          protocol: https
-          host: localhost
-          port: 8080
-          path: direct
-          parameters:
-            com.networknt.petstore-1.0.0: https://localhost:8443?environment=dev
-  - com.networknt.registry.Registry:
-      - com.networknt.registry.support.DirectRegistry
-  - com.networknt.balance.LoadBalance:
-      - com.networknt.balance.RoundRobinLoadBalance
-  - com.networknt.cluster.Cluster:
-      - com.networknt.cluster.LightCluster
-
 
 serviceDict.mapping:
   /v1/pets@get: com.networknt.petstore-1.0.0
   /v2/address@get: party.address-2.0.0
   /v1/contact@post: party.contact-1.0.0
+
+# Service Singletons
+service.singletons:
