@@ -45,7 +45,9 @@ handlers:
   # Header middleware to manipulate request and/or response headers before or after downstream server
   - com.networknt.header.HeaderHandler@header
   # Direct requests to named services based on the request path
-  - com.networknt.router.middleware.ServiceDictHandler@path
+  #- com.networknt.router.middleware.ServiceDictHandler@path
+  #- com.networknt.router.middleware.PathServiceHandler@path
+  #- com.networknt.router.middleware.PathPrefixServiceHandler@prefix
   - com.networknt.router.RouterHandler@router
   # - com.networknt.resource.VirtualHostHandler@virtual
   # Customer business domain specific cross-cutting concerns handlers
@@ -65,7 +67,8 @@ chains:
     - cors
     - stateless
     - header
-    - path
+    #- path
+    #- prefix
     - router
     #- specification
     #- security
