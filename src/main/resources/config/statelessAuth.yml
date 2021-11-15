@@ -12,9 +12,9 @@ redirectUri: ${statelessAuth.redirectUri:https://lightapi.net/#/app/dashboard}
 denyUri: ${statelessAuth.denyUri:https://lightapi.net/#/app/dashboard}
 # Request path for the authorization code handling.
 authPath: ${statelessAuth.authPath:/authorization}
-# Request path for the deny authorization handling to remove HttpOnly access-token and other cookies
+# Request path for the logout handling to remove HttpOnly access-token and other cookies
 logoutPath: ${statelessAuth.logoutPath:/logout}
-# Cookie domain
+# Cookie domain which is the original site
 cookieDomain: ${statelessAuth.cookieDomain:lightapi.net}
 # Cookie path
 cookiePath: ${statelessAuth.cookiePath:/}
@@ -22,3 +22,29 @@ cookiePath: ${statelessAuth.cookiePath:/}
 cookieTimeoutUri: ${statelessAuth.cookieTimeoutUri:/}
 # Cookie secured
 cookieSecure: ${statelessAuth.cookieSecure:true}
+
+# Bootstrap token used by oauth-kafka to call light-portal services. This is a client credentials token without user info. And it is created with a special tool only available to customers.
+bootstrapToken: ${STATELESS_AUTH_BOOTSTRAP_TOKEN:}
+
+# Google Auth Path
+googlePath: ${statelessAuth.googlePath:/google}
+# Google Client Id
+googleClientId: ${statelessAuth.googleClientId:654131058807-15p8l5r4ddlusbeavvhiin9rt2cuglh6.apps.googleusercontent.com}
+# Google Client Secret that is retrieved from the environment variable
+googleClientSecret: ${GOOGLE_CLIENT_SECRET:}
+# Google Redirect URI
+googleRedirectUri: ${statelessAuth.googleRedirectUri:https://localhost:3000}
+
+# Facebook Auth Path
+facebookPath: ${statelessAuth.facebookPath:/facebook}
+# Facebook Client Id
+facebookClientId: ${statelessAuth.facebookClientId:603230757035427}
+# Facebook Client Secret that is retrieved from the environment variable
+facebookClientSecret: ${FACEBOOK_CLIENT_SECRET:}
+
+# GitHub Auth Path
+githubPath: ${statelessAuth.githubPath:/github}
+# GitHub Client Id
+githubClientId: ${statelessAuth.githubClientId:f13cddcfe475920deca7}
+# GitHub Client Secret that is retrieved from the environment variable
+githubClientSecret: ${GITHUB_CLIENT_SECRET:}
