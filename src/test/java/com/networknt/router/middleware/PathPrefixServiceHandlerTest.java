@@ -52,7 +52,7 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
             headerHandler.setNext(handler);
             handler = headerHandler;
             server = Undertow.builder()
-                    .addHttpListener(8080, "localhost")
+                    .addHttpListener(7080, "localhost")
                     .setHandler(handler)
                     .build();
             server.start();

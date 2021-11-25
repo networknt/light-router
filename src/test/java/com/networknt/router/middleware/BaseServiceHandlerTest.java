@@ -30,7 +30,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testV1Address() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
@@ -64,7 +64,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testV2Address() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
@@ -98,7 +98,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testV1Contact() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
@@ -135,7 +135,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testBadPath() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
@@ -165,7 +165,7 @@ public class BaseServiceHandlerTest {
 
     @Test
     public void testServiceIdHeaderOverride() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;

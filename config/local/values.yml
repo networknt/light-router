@@ -3,7 +3,7 @@ service.singletons:
       - com.networknt.registry.URLImpl:
           protocol: https
           host: localhost
-          port: 8080
+          port: 7080
           path: direct
           parameters:
             com.networknt.petstore-1.0.0: https://localhost:8443

@@ -65,7 +65,7 @@ public class PathServiceHandlerTest {
             headerHandler.setNext(handler);
             handler = headerHandler;
             server = Undertow.builder()
-                    .addHttpListener(8080, "localhost")
+                    .addHttpListener(7080, "localhost")
                     .setHandler(handler)
                     .build();
             server.start();
@@ -106,7 +106,7 @@ public class PathServiceHandlerTest {
 
     @Test
     public void testV1Address() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
@@ -141,7 +141,7 @@ public class PathServiceHandlerTest {
 
     @Test
     public void testV2Address() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
@@ -176,7 +176,7 @@ public class PathServiceHandlerTest {
 
     @Test
     public void testV1Contact() throws Exception {
-        String url = "http://localhost:8080";
+        String url = "http://localhost:7080";
         Http2Client client = Http2Client.getInstance();
         final CountDownLatch latch = new CountDownLatch(1);
         final ClientConnection connection;
