@@ -85,7 +85,7 @@
         <version.logback>1.2.3</version.logback>
         <version.logstash>6.5</version.logstash>
         <version.junit>4.13.1</version.junit>
-        <version.undertow>2.2.4.Final</version.undertow>
+        <version.undertow>2.2.14.Final</version.undertow>
         <version.json-schema-validator>1.0.63</version.json-schema-validator>
         <version.google>1.30.10</version.google>
         <version.facebook>3.9.0</version.facebook>
