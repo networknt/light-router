@@ -1,6 +1,18 @@
 # Handler middleware chain configuration
 ---
-enabled: ${handler.enabled:true}
+enabled: true
+
+# Configuration for the LightHttpHandler. The handler is the base class  for all middleware, server and health handlers
+# set the Status Object in the AUDIT_INFO, for auditing purposes
+# default, if not set:false
+auditOnError: ${handler.auditOnError:false}
+
+# set the StackTrace in the AUDIT_INFO, for auditing purposes
+# default, if not set:false
+auditStackTrace: ${handler.auditStackTrace:false}
+
+# Base Path of the API endpoints
+basePath: ${handler.basePath:/v1}
 
 #------------------------------------------------------------------------------
 # Support individual handler chains for each separate endpoint. It allows framework
@@ -31,10 +43,10 @@ enabled: ${handler.enabled:true}
 handlers:
   # Light-framework cross-cutting concerns implemented in the microservice
   - com.networknt.exception.ExceptionHandler@exception
-  # - com.networknt.metrics.MetricsHandler@metrics
+  - com.networknt.metrics.MetricsHandler@metrics
   - com.networknt.traceability.TraceabilityHandler@traceability
   - com.networknt.correlation.CorrelationHandler@correlation
-  #Cors handler to handler post/put pre-flight
+  # Cors handler to handler post/put pre-flight. It is not used in the sidecar but only in the router.
   - com.networknt.cors.CorsHttpHandler@cors
   # - com.networknt.openapi.OpenApiHandler@specification
   # - com.networknt.openapi.JwtVerifyHandler@security
@@ -55,13 +67,16 @@ handlers:
   # Framework endpoint handlers
   - com.networknt.health.HealthGetHandler@health
   - com.networknt.info.ServerInfoGetHandler@info
+  - com.networknt.logging.handler.LoggerGetHandler@getLogger
+  - com.networknt.logging.handler.LoggerPostHandler@postLogger
+  - com.networknt.logging.handler.LoggerGetLogContentsHandler@getLogContents
   # - com.networknt.metrics.prometheus.PrometheusGetHandler@getprometheus
   - com.networknt.auth.StatelessAuthHandler@stateless
 
 chains:
   default:
     - exception
-    #- metrics
+    - metrics
     - traceability
     - correlation
     - cors
@@ -76,6 +91,13 @@ chains:
     #- audit
     #- sanitizer
     #- validator
+  admin:
+    - exception
+    - correlation
+    - specification
+    - security
+    - body
+    - validator
 
 paths:
   - path: '/*'
@@ -98,14 +120,40 @@ paths:
     method: 'PATCH'
     exec:
       - default
-
-  - path: '/health/com.networknt.router-0.1.0'
-    method: 'get'
-    exec:
-      - health
-
-  # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0 or Basic Auth
+  # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0
   - path: '/server/info'
     method: 'get'
     exec:
+      - admin
       - info
+  # the health endpoint for the proxy itself without security, this for both Kubernetes liveness and readiness.
+  - path: '/health'
+    method: 'get'
+    exec:
+      - exception
+      - health
+  # the health check endpoint called from control plane with security and it will invoke backend optionally.
+  - path: '/health/${server.serviceId}'
+    method: 'get'
+    exec:
+      - admin
+      - health
+
+  - path: '/logger'
+    method: 'get'
+    exec:
+      - admin
+      - getLogger
+
+  - path: '/logger'
+    method: 'post'
+    exec:
+      - admin
+      - postLogger
+
+  - path: '/logger/content'
+    method: 'GET'
+    exec:
+      - admin
+      - getLogContents
+

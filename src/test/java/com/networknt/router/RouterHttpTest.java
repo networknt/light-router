@@ -31,9 +31,12 @@ import io.undertow.client.ClientResponse;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
-import io.undertow.util.HttpString;
 import io.undertow.util.Methods;
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xnio.IoUtils;
@@ -55,6 +58,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.networknt.server.Server.TRUST_ALL_CERTS;
 import static io.undertow.Handlers.path;
 
+@ExtendWith(TestServer.class)
 public class RouterHttpTest {
     static final Logger logger = LoggerFactory.getLogger(RouterHttpTest.class);
     public static final String CONFIG_NAME = "server";
@@ -63,7 +67,6 @@ public class RouterHttpTest {
     static Undertow server1 = null;
     static Undertow server2 = null;
     static Undertow server3 = null;
-    @ClassRule
     public static TestServer server = TestServer.getInstance();
     public static ServerConfig config = (ServerConfig) Config.getInstance().getJsonObjectConfig(CONFIG_NAME, ServerConfig.class);
     public static Map<String, Object> secret = DecryptUtil.decryptMap(Config.getInstance().getJsonMapConfig(CONFIG_SECRET));
@@ -75,7 +78,7 @@ public class RouterHttpTest {
     static final int httpsPort = server.getServerConfig().getHttpsPort();
     static final String url = enableHttp2 || enableHttps ? "https://localhost:" + httpsPort : "http://localhost:" + httpPort;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         if(server1 == null) {
             logger.info("starting server1");
@@ -134,7 +137,7 @@ public class RouterHttpTest {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if(server1 != null) {
             try {
@@ -193,9 +196,9 @@ public class RouterHttpTest {
         }
         int statusCode = reference.get().getResponseCode();
         String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
-        Assert.assertEquals(200, statusCode);
+        Assertions.assertEquals(200, statusCode);
         if (statusCode == 200) {
-            Assert.assertEquals("Server1", body);
+            Assertions.assertEquals("Server1", body);
         }
     }
 
@@ -236,7 +239,7 @@ public class RouterHttpTest {
         for (final AtomicReference<ClientResponse> reference : references) {
             String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
             if(logger.isDebugEnabled()) logger.debug("body = " + body);
-            Assert.assertTrue(body.contains("Server"));
+            Assertions.assertTrue(body.contains("Server"));
         }
     }
 

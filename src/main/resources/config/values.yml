@@ -1,8 +1,14 @@
+service.singletons:
+  - com.networknt.utility.Decryptor:
+      - com.networknt.decrypt.AESDecryptor
+  - com.networknt.balance.LoadBalance:
+      - com.networknt.balance.RoundRobinLoadBalance
+  - com.networknt.cluster.Cluster:
+      - com.networknt.cluster.LightCluster
 
 serviceDict.mapping:
   /v1/pets@get: com.networknt.petstore-1.0.0
   /v2/address@get: party.address-2.0.0
   /v1/contact@post: party.contact-1.0.0
 
-# Service Singletons
-service.singletons:
+server.serviceId: com.networknt.router-1.0.0

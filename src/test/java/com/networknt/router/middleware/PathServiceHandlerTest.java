@@ -32,10 +32,10 @@ import io.undertow.server.RoutingHandler;
 import io.undertow.util.HeaderMap;
 import io.undertow.util.Headers;
 import io.undertow.util.Methods;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xnio.IoUtils;
@@ -50,7 +50,7 @@ public class PathServiceHandlerTest {
 
     static Undertow server = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         if(server == null) {
             logger.info("starting server");
@@ -72,7 +72,7 @@ public class PathServiceHandlerTest {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if(server != null) {
             try {
@@ -132,10 +132,10 @@ public class PathServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
+        Assertions.assertEquals(200, statusCode);
         if(statusCode == 200) {
-            Assert.assertTrue("party.address-1.0.0".equals(serviceId));
-            Assert.assertTrue("dev".equals(envTag));
+            Assertions.assertTrue("party.address-1.0.0".equals(serviceId));
+            Assertions.assertTrue("dev".equals(envTag));
         }
     }
 
@@ -167,10 +167,10 @@ public class PathServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
+        Assertions.assertEquals(200, statusCode);
         if(statusCode == 200) {
-            Assert.assertTrue("party.address-2.0.0".equals(serviceId));
-            Assert.assertTrue("dev".equals(envTag));
+            Assertions.assertTrue("party.address-2.0.0".equals(serviceId));
+            Assertions.assertTrue("dev".equals(envTag));
         }
     }
 
@@ -204,10 +204,10 @@ public class PathServiceHandlerTest {
         HeaderMap headerMap = reference.get().getResponseHeaders();
         String serviceId = headerMap.getFirst(HttpStringConstants.SERVICE_ID);
         String envTag = headerMap.getFirst(HttpStringConstants.ENV_TAG);
-        Assert.assertEquals(200, statusCode);
+        Assertions.assertEquals(200, statusCode);
         if(statusCode == 200) {
-            Assert.assertTrue("party.contact-1.0.0".equals(serviceId));
-            Assert.assertTrue("dev".equals(envTag));
+            Assertions.assertTrue("party.contact-1.0.0".equals(serviceId));
+            Assertions.assertTrue("dev".equals(envTag));
         }
     }
 
