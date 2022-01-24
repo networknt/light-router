@@ -19,10 +19,10 @@ package com.networknt.router.middleware;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
 
     static Undertow server = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         if(server == null) {
             logger.info("starting server");
@@ -59,7 +59,7 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
         }
     }
     
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if(server != null) {
             try {
@@ -116,6 +116,6 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
             result.put(path, HandlerUtils.findServiceId(HandlerUtils.normalisePath(path), PathPrefixServiceHandler.mapping));
         }
 
-        Assert.assertEquals(expected, result);
+        Assertions.assertEquals(expected, result);
     }
 }

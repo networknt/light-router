@@ -4,10 +4,10 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +20,12 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.RoutingHandler;
 import io.undertow.util.Methods;
 
-public class ServiceDictHandlerTest extends BaseServiceHandlerTest{
+public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
     static final Logger logger = LoggerFactory.getLogger(ServiceDictHandlerTest.class);
 
     static Undertow server = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         if(server == null) {
             logger.info("starting server");
@@ -44,7 +44,7 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest{
         }
     }
     
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception {
         if(server != null) {
             try {
@@ -100,7 +100,7 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest{
             result.put(pair, HandlerUtils.findServiceId(toKey(pair), ServiceDictHandler.mappings));
         }
 
-        Assert.assertEquals(expected, result);
+        Assertions.assertEquals(expected, result);
     }    
     
     private AbstractMap.SimpleEntry<String, String> createPair(String path, String method){
