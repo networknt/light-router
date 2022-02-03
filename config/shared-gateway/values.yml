@@ -1,0 +1,70 @@
+# server.yml
+server.serviceId: com.networknt.router-1.0.0
+
+# service.yml
+service.singletons:
+  - com.networknt.registry.URL:
+      - com.networknt.registry.URLImpl:
+          parameters:
+            # com.networknt.portal.hybrid.query-1.0.0: https://hybrid-query1:8440,https://hybrid-query2:8441,https://hybrid-query3:8442
+            # com.networknt.portal.hybrid.command-1.0.0: https://hybrid-command:8439
+            # com.networknt.oauth-key-1.0.0: https://oauth-key:6886
+            # com.networknt.oauth-token-1.0.0: https://oauth-token:6882
+            # com.networknt.oauth-code-1.0.0: https://oauth-code:6881
+            # com.networknt.reference-1.0.0: https://reference:2498
+            # com.networknt.config-server-1.0.0: https://localhost:8435
+            # com.networknt.controller-1.0.0: https://controller-node1:8438,https://controller-node2:8437,https://controller-node3:8436
+            # com.networknt.scheduler-1.0.0: https://scheduler-node1:8401,https://scheduler-node2:8402,https://scheduler-node3:8403
+            com.networknt.petstore-1.0.0: https://localhost:9443
+  - com.networknt.registry.Registry:
+      - com.networknt.registry.support.DirectRegistry
+  - com.networknt.balance.LoadBalance:
+      - com.networknt.balance.RoundRobinLoadBalance
+  - com.networknt.cluster.Cluster:
+      - com.networknt.cluster.LightCluster
+  - com.networknt.utility.Decryptor:
+      - com.networknt.decrypt.AESDecryptor
+
+# pathPrefixService.yml
+pathPrefixService.enabled: true
+pathPrefixService.mapping:
+  # /oauth2/token: com.networknt.oauth-token-1.0.0
+  # /oauth2/code: com.networknt.oauth-code-1.0.0
+  # /oauth2/key: com.networknt.oauth-key-1.0.0
+  # /r: com.networknt.reference-1.0.0
+  # /portal/command: com.networknt.portal.hybrid.command-1.0.0
+  # /portal/query: com.networknt.portal.hybrid.query-1.0.0
+  # /config-server: com.networknt.config-server-1.0.0
+  # /services: com.networknt.controller-1.0.0
+  # /schedulers: com.networknt.scheduler-1.0.0
+  /v1: com.networknt.petstore-1.0.0
+
+# whitelist.yml
+whitelist.enabled: false
+whitelist.paths:
+  # For a particular endpoint(path@method), there are three IPs can access
+  '/health/com.networknt.petstore-1.0.0@get':
+    # IPv4 Exact
+    - '127.0.0.1'
+    # IPv4 Wildcard
+    - '10.10.*.*'
+    # IPv4 Slash
+    - '127.0.0.48/30'
+
+  # For a path, the following IP can access regardless the method
+  '/prometheus@get':
+    # IPv6 Exact
+    - 'FE45:00:00:000:0:AAA:FFFF:0045'
+    # IPv6 Prefix
+    - 'FE45:00:00:000:0:AAA:FFFF:*'
+    # IPv6 Slash
+    - 'FE45:00:00:000:0:AAA:FFFF:01F4/127'
+
+  # For a particular endpoint(path@method), there are three IPs can access
+  '/data@get':
+    # IPv4 Exact
+    - '127.0.0.2'
+    # IPv4 Wildcard
+    - '10.10.*.*'
+    # IPv4 Slash
+    - '127.0.0.48/30'
