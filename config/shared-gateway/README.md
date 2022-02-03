@@ -1,0 +1,1 @@
+This folder contains a list of example config files to set up the light-router as a shared gateway.  Please refer to the [shared-gateway tutorial](https://doc.networknt.com/tutorial/rotuer/shared-gateway/) for more information.
