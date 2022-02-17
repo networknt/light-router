@@ -1,6 +1,9 @@
 # server.yml
 server.serviceId: com.networknt.router-1.0.0
 
+# router.yml
+router.maxRequestTime: 1000
+
 # service.yml
 service.singletons:
   - com.networknt.registry.URL:
