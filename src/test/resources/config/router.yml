@@ -20,3 +20,10 @@ reuseXForwarded: false
 
 # Max Connection Retries
 maxConnectionRetries: 3
+
+
+# support serviceId in the query parameter for routing to overwrite serviceId in header routing.
+# by default, it is false and shouldn't be used unless you are dealing with a legacy client that
+# doesn't support header manipulation. Once this flag is true, we are going to overwrite the header
+# service_id derived with other handlers from prefix, path, endpoint etc.
+serviceIdQueryParameter: ${router.serviceIdQueryParameter:true}
