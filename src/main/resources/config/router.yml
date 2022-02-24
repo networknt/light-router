@@ -23,3 +23,15 @@ maxConnectionRetries: ${router.maxConnectionRetries:3}
 
 # allowed host list. Use Regex to do wildcard match
 hostWhitelist: ${router.hostWhitelist:.*}
+
+# support serviceId in the query parameter for routing to overwrite serviceId in header routing.
+# by default, it is false and shouldn't be used unless you are dealing with a legacy client that
+# doesn't support header manipulation. Once this flag is true, we are going to overwrite the header
+# service_id derived with other handlers from prefix, path, endpoint etc.
+serviceIdQueryParameter: ${router.serviceIdQueryParameter:false}
+
+# URL rewrite rules, each line will have two parts: the regex patten and replace string separated
+# with a space. The light-router has service discovery for host routing, so whe working on the
+# url rewrite rules, we only need to create about the path in the URL.
+# Test your rules at https://www.freeformatter.com/java-regex-tester.html#ad-output
+urlRewriteRules: ${router.urlRewriteRules:}

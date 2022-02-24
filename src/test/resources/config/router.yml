@@ -27,3 +27,18 @@ maxConnectionRetries: 3
 # doesn't support header manipulation. Once this flag is true, we are going to overwrite the header
 # service_id derived with other handlers from prefix, path, endpoint etc.
 serviceIdQueryParameter: ${router.serviceIdQueryParameter:true}
+
+# URL rewrite rules, each line will have two parts: the regex patten and replace string separated
+# with a space. The light-router has service discovery for host routing, so whe working on the
+# url rewrite rules, we only need to create about the path in the URL.
+# Test your rules at https://www.freeformatter.com/java-regex-tester.html#ad-output
+urlRewriteRules:
+  # test your regex rule at https://www.freeformatter.com/java-regex-tester.html#ad-output
+  # /listings/123 to /listing.html?listing=123
+  - /listings/(.*)$ /listing.html?listing=$1
+  # /ph/uat/de-asia-ekyc-service/v1 to /uat-de-asia-ekyc-service/v1
+  - /ph/uat/de-asia-ekyc-service/v1 /uat-de-asia-ekyc-service/v1
+  # /tutorial/linux/wordpress/file1 to /tutorial/linux/cms/file1.php
+  - (/tutorial/.*)/wordpress/(\w+)\.?.*$ $1/cms/$2.php
+  # used in the test case to router /v3/address request to /v2/address
+  - /v3/(.*)$ /v2/$1

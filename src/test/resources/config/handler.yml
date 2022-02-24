@@ -85,6 +85,10 @@ paths:
     method: 'GET'
     exec:
       - default
+  - path: '/v3/address'
+    method: 'GET'
+    exec:
+      - default
 
   - path: '/health/com.networknt.router-0.1.0'
     method: 'get'
