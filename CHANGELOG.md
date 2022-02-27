@@ -1,5 +1,29 @@
 # Change Log
 
+## [2.1.0](https://github.com/networknt/light-router/tree/2.1.0) (2022-02-27)
+
+
+**Merged pull requests:**
+
+
+- fixes \#139 update the internal config file templates [\#140](https://github.com/networknt/light-router/pull/140) ([stevehu](https://github.com/stevehu))
+- fixes \#136 add a new test case to allow the serviceId passed from the… [\#137](https://github.com/networknt/light-router/pull/137) ([stevehu](https://github.com/stevehu))
+- Issue133 [\#134](https://github.com/networknt/light-router/pull/134) ([stevehu](https://github.com/stevehu))
+- fixes \#131 add a dummy openapi.yml to ensure that the openapi-inject.… [\#132](https://github.com/networknt/light-router/pull/132) ([stevehu](https://github.com/stevehu))
+- fixes \#129 upgrade to junit 5 and update config files [\#130](https://github.com/networknt/light-router/pull/130) ([stevehu](https://github.com/stevehu))
+- fixes \#127 add the server bootstrap cert and private key to the clien… [\#128](https://github.com/networknt/light-router/pull/128) ([stevehu](https://github.com/stevehu))
+- fixes \#125 update statelessAuth.yml to add the bootstrap token and so… [\#126](https://github.com/networknt/light-router/pull/126) ([stevehu](https://github.com/stevehu))
+- \#123 [\#124](https://github.com/networknt/light-router/pull/124) ([wswjwjccjlu](https://github.com/wswjwjccjlu))
+- fixes \#121 add disabled jaeger-tracing.yml to the default config folder [\#122](https://github.com/networknt/light-router/pull/122) ([stevehu](https://github.com/stevehu))
+- fixes \#118 sync server.yml from server module of light-4j [\#119](https://github.com/networknt/light-router/pull/119) ([stevehu](https://github.com/stevehu))
+- fixes \#116 update default client.yml to remove the proxy section in t… [\#117](https://github.com/networknt/light-router/pull/117) ([stevehu](https://github.com/stevehu))
+-  fix type error on the statelessAuth config [\#115](https://github.com/networknt/light-router/pull/115) ([GavinChenYan](https://github.com/GavinChenYan))
+- change the default handler for path [\#114](https://github.com/networknt/light-router/pull/114) ([GavinChenYan](https://github.com/GavinChenYan))
+- fixes \#112 move the PathPrefixServiceHandler to egress-router in ligh… [\#113](https://github.com/networknt/light-router/pull/113) ([stevehu](https://github.com/stevehu))
+- default config change for service.yml [\#111](https://github.com/networknt/light-router/pull/111) ([GavinChenYan](https://github.com/GavinChenYan))
+-  add statelessAuth default config [\#110](https://github.com/networknt/light-router/pull/110) ([GavinChenYan](https://github.com/GavinChenYan))
+
+
 ## [2.0.32](https://github.com/networknt/light-router/tree/2.0.32) (2021-10-19)
 
 
