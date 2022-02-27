@@ -17,7 +17,10 @@ exclusionConfigFileList:
   - status
 
 decryptorClass: com.networknt.decrypt.AESDecryptor
-# For the kafka config files, we have left some properties without default values as there
-# would be negative impact on the Kafka cluster. The following config will ensure that null
-# will be used when the default value is empty without stopping the server during the start.
+#  com.networknt.decrypt.ManualAESDecryptor
+#  com.networknt.decrypt.AutoAESDecryptor
+
+# For some configuration files, we have left some properties without default values as there
+# would be negative impact on the application security. The following config will ensure that
+# null will be used when the default value is empty without stopping the server during the start.
 allowDefaultValueEmpty: true
