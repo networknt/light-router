@@ -85,6 +85,11 @@ paths:
     method: 'GET'
     exec:
       - default
+  - path: '/v2/address'
+    method: 'DELETE'
+    exec:
+      - default
+
   - path: '/v3/address'
     method: 'GET'
     exec:
