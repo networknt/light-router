@@ -49,6 +49,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -87,6 +88,10 @@ public class RouterHttpTest {
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
+                            Map<String, Deque<String>> params = exchange.getQueryParameters();
+                            for(Map.Entry<String, Deque<String>> param : params.entrySet()) {
+                                System.out.println(param.getKey() + " -> " + param.getValue().getFirst());
+                            }
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server1");
                         }
@@ -105,6 +110,10 @@ public class RouterHttpTest {
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
+                            Map<String, Deque<String>> params = exchange.getQueryParameters();
+                            for(Map.Entry<String, Deque<String>> param : params.entrySet()) {
+                                System.out.println(param.getKey() + " -> " + param.getValue().getFirst());
+                            }
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server2");
                         }
@@ -124,6 +133,10 @@ public class RouterHttpTest {
                     .setHandler(path().addPrefixPath("/v2/address", new HttpHandler() {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
+                            Map<String, Deque<String>> params = exchange.getQueryParameters();
+                            for(Map.Entry<String, Deque<String>> param : params.entrySet()) {
+                                System.out.println(param.getKey() + " -> " + param.getValue().getFirst());
+                            }
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server3");
                         }
@@ -219,6 +232,43 @@ public class RouterHttpTest {
         final AtomicReference<ClientResponse> reference = new AtomicReference<>();
         try {
             ClientRequest request = new ClientRequest().setPath("/v3/address").setMethod(Methods.GET);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
+            request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "com.networknt.test-1.0.0");
+            connection.sendRequest(request, client.createClientCallback(reference, latch));
+            latch.await();
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        int statusCode = reference.get().getResponseCode();
+        String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
+        Assertions.assertEquals(200, statusCode);
+        if (statusCode == 200) {
+            Assertions.assertTrue(body.contains("Server"));
+        }
+    }
+
+    /**
+     * Calling server1 /v2/address with the /v3/address request to ensure that url rewrite is working. Also, the request will
+     * have some query parameters and the test will ensure they are all passed to the request handler.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testUrlRewriteWithQueryParameters() throws Exception {
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        try {
+            ClientRequest request = new ClientRequest().setPath("/v3/address?host=lightapi.net&module=http-sidecar").setMethod(Methods.GET);
             request.getRequestHeaders().put(Headers.HOST, "localhost");
             request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "com.networknt.test-1.0.0");
             connection.sendRequest(request, client.createClientCallback(reference, latch));
