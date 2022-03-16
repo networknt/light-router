@@ -30,6 +30,9 @@ tls:
 # settings for OAuth2 server communication
 oauth:
   # OAuth 2.0 token endpoint configuration
+  # If there are multiple oauth providers per serviceId, then we need to update this flag to true. In order to derive the serviceId from the
+  # path prefix, we need to set up the pathPrefixServices below if there is no duplicated paths between services.
+  multipleAuthServers: ${client.multipleAuthServers:false}
   token:
     cache:
       #capacity of caching TOKENs
@@ -42,7 +45,7 @@ oauth:
     earlyRefreshRetryDelay: ${client.earlyRefreshRetryDelay:4000}
     # token server url. The default port number for token service is 6882. If this is set,
     # it will take high priority than serviceId for the direct connection
-    # server_url: ${client.tokenServerUrl:https://localhost:6882}
+    server_url: ${client.tokenServerUrl:}
     # token service unique id for OAuth 2.0 provider. If server_url is not set above,
     # a service discovery action will be taken to find an instance of token service.
     serviceId: ${client.tokenServiceId:com.networknt.oauth2-token-1.0.0}
@@ -50,11 +53,11 @@ oauth:
     # and has an internal proxy server to access code, token and key services of OAuth 2.0, set up the
     # proxyHost here for the HTTPS traffic. This option is only working with server_url and serviceId
     # below should be commented out. OAuth 2.0 services cannot be discovered if a proxy server is used.
-    # proxyHost: ${client.tokenProxyHost:proxy.lightapi.net}
+    proxyHost: ${client.tokenProxyHost:}
     # We only support HTTPS traffic for the proxy and the default port is 443. If your proxy server has
     # a different port, please specify it here. If proxyHost is available and proxyPort is missing, then
     # the default value 443 is going to be used for the HTTP connection.
-    # proxyPort: ${client.tokenProxyPort:3128}
+    proxyPort: ${client.tokenProxyPort:}
     # set to true if the oauth2 provider supports HTTP/2
     enableHttp2: ${client.tokenEnableHttp2:true}
     # the following section defines uri and parameters for authorization code grant type
@@ -85,6 +88,9 @@ oauth:
       # scope:
       # - petstore.r
       # - petstore.w
+      # The serviceId to the service specific OAuth 2.0 configuration. Used only when multipleOAuthServer is
+      # set as true. For detailed config options, please see the values.yml in the client module test.
+      serviceIdAuthServers: ${client.tokenCcServiceIdAuthServers:}
     refresh_token:
       # token endpoint for refresh token grant
       uri: ${client.tokenRtUri:/oauth2/token}
@@ -101,7 +107,7 @@ oauth:
     key:
       # key distribution server url for token verification. It will be used if it is configured.
       # If it is not set, a service lookup will be taken with serviceId to find an instance.
-      # server_url: ${client.tokenKeyServerUrl:https://localhost:6886}
+      server_url: ${client.tokenKeyServerUrl:}
       # key serviceId for key distribution service, it will be used if above server_url is not configured.
       serviceId: ${client.tokenKeyServiceId:com.networknt.oauth2-key-1.0.0}
       # the path for the key distribution endpoint
@@ -112,6 +118,9 @@ oauth:
       client_secret: ${client.tokenKeyClientSecret:f6h1FTI8Q3-7UScPZDzfXA}
       # set to true if the oauth2 provider supports HTTP/2
       enableHttp2: ${client.tokenKeyEnableHttp2:true}
+      # The serviceId to the service specific OAuth 2.0 configuration. Used only when multipleOAuthServer is
+      # set as true. For detailed config options, please see the values.yml in the client module test.
+      serviceIdAuthServers: ${client.tokenKeyServiceIdAuthServers:}
   # sign endpoint configuration
   sign:
     # token server url. The default port number for token service is 6882. If this url exists, it will be used.
@@ -176,6 +185,10 @@ oauth:
     client_id: ${client.derefClientId:f7d42348-c647-4efb-a52d-4c5787421e72}
     # client_secret for deref
     client_secret: ${client.derefClientSecret:f6h1FTI8Q3-7UScPZDzfXA}
+# If you have multiple OAuth 2.0 providers and use path prefix to decide which OAuth 2.0 server
+# to get the token or JWK. If two or more services have the same path, you must use serviceId in
+# the request header to use the serviceId to find the OAuth 2.0 provider configuration.
+pathPrefixServices: ${client.pathPrefixServices:}
 # circuit breaker configuration for the client
 request:
   # number of timeouts/errors to break the circuit
@@ -192,7 +205,11 @@ request:
   enableHttp2: ${client.enableHttp2:true}
   # the maximum host capacity of connection pool
   connectionPoolSize: ${client.connectionPoolSize:1000}
-  # the maximum request limitation for each connection
+  # Connection expire time when connection pool is used. By default, the cached connection will be closed after 30 minutes.
+  # This is one way to force the connection to be closed so that the client-side discovery can be balanced.
+  connectionExpireTime: ${client.connectionExpireTime:1800000}
+  # The maximum request limitation for each connection in the connection pool. By default, a connection will be closed after
+  # sending 1 million requests. This is one way to force the client-side discovery to rebalence the connections.
   maxReqPerConn: ${client.maxReqPerConn:1000000}
   # maximum quantity of connection in connection pool for each host
   maxConnectionNumPerHost: ${client.maxConnectionNumPerHost:1000}
