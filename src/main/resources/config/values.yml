@@ -1,3 +1,4 @@
+# service.yml
 service.singletons:
   - com.networknt.utility.Decryptor:
       - com.networknt.decrypt.AESDecryptor
@@ -11,4 +12,11 @@ serviceDict.mapping:
   /v2/address@get: party.address-2.0.0
   /v1/contact@post: party.contact-1.0.0
 
+# server.yml
 server.serviceId: com.networknt.router-1.0.0
+
+# router.yml
+router.hostWhitelist:
+  - 192.168.0.*
+  - localhost
+

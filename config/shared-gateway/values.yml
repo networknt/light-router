@@ -1,6 +1,6 @@
 # server.yml
 server.serviceId: com.networknt.router-1.0.0
-
+server.httpsPort: 7443
 # router.yml
 router.maxRequestTime: 1000
 

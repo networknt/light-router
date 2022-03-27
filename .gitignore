@@ -2,11 +2,13 @@ target/
 bower_components/
 node_modules/
 dist/
+log/
 .idea/
 .tmp/
 .project
 .classpath
 .settings
+.attach_*
 .metadata/
 *.iml
 *.log
@@ -19,3 +21,7 @@ dependency-reduced-pom.xml
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 !rest.zip
+
+.DS_Store
+build.out
+dependency-reduced-pom.xml
