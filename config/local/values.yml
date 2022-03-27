@@ -1,3 +1,7 @@
+# server.yml
+server.httpsPort: 9443
+
+# service.yml
 service.singletons:
   - com.networknt.registry.URL:
       - com.networknt.registry.URLImpl:
@@ -19,7 +23,6 @@ serviceDict.mapping:
   /v2/address@get: party.address-2.0.0
   /v1/contact@post: party.contact-1.0.0
 
-server.httpsPort: 9443
 
 ## handler yaml
 handler.enabled: true

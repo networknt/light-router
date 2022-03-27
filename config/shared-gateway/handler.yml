@@ -50,7 +50,7 @@ handlers:
   - com.networknt.cors.CorsHttpHandler@cors
   - com.networknt.openapi.OpenApiHandler@specification
   - com.networknt.openapi.JwtVerifyHandler@security
-  - com.networknt.body.BodyHandler@body
+  - com.networknt.body.ProxyBodyHandler@body
   # - com.networknt.audit.AuditHandler@audit
   # - com.networknt.sanitizer.SanitizerHandler@sanitizer
   - com.networknt.openapi.ValidatorHandler@validator
@@ -79,21 +79,21 @@ handlers:
 
 chains:
   default:
-    - whitelist
+    # - whitelist
     - exception
-    - metrics
+    # - metrics
     - limit
     - traceability
     - correlation
     - cors
     # - stateless
     - header
+    - body
     #- path
     - prefix
     - router
     #- specification
     #- security
-    #- body
     #- audit
     #- sanitizer
     #- validator

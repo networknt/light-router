@@ -56,12 +56,17 @@ handlers:
   # - com.networknt.openapi.ValidatorHandler@validator
   # Header middleware to manipulate request and/or response headers before or after downstream server
   - com.networknt.header.HeaderHandler@header
+  # Rate limit middleware to prevent DDoS attacks externally or throttle requests internally
+  - com.networknt.limit.LimitHandler@limit
   # Direct requests to named services based on the request path
   #- com.networknt.router.middleware.ServiceDictHandler@path
   #- com.networknt.router.middleware.PathServiceHandler@path
   #- com.networknt.router.middleware.PathPrefixServiceHandler@prefix
   - com.networknt.router.RouterHandler@router
   # - com.networknt.resource.VirtualHostHandler@virtual
+  - com.networknt.config.reload.handler.ModuleRegistryGetHandler@modules
+  - com.networknt.config.reload.handler.ConfigReloadHandler@configReload
+
   # Customer business domain specific cross-cutting concerns handlers
   # - com.example.validator.CustomizedValidator@custvalidator
   # Framework endpoint handlers
@@ -156,4 +161,15 @@ paths:
     exec:
       - admin
       - getLogContents
+
+  - path: '/modules'
+    method: 'get'
+    exec:
+      - modules
+
+  - path: '/modules'
+    method: 'post'
+    exec:
+      - body
+      - configReload
 
