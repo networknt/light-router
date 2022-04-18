@@ -51,3 +51,45 @@ urlRewriteRules:
 # Note: you cannot rewrite a method with a body to a method without a body or vice versa.
 methodRewriteRules:
   - /v2/address DELETE GET
+
+# Query parameter rewrite rules for client applications that send different query parameter keys or values
+# than the target server expecting. When overwriting a value, the key must be specified in order to
+# identify the right query parameter. If only the ok and nk are specified, the router will rewrite the
+# query parameter key ok with different key nk and keep the value.
+# The format of the rule will be a map with the path as the key. Please refer to test values.yml for
+# examples.
+queryParamRewriteRules:
+  # rewrite query parameter key business-query to request-query and value value1 to value2 for /v1/address
+  /v2/address:
+    - oldK: business-query
+      # overwrite the key
+      newK: request-query
+      oldV: value1
+      # overwrite the value at the same time.
+      newV: value2
+    - oldK: module
+      newK: mod
+    - oldK: app-id
+      oldV: esb
+      newV: emb
+
+# Header rewrite rules for client applications that send different header keys or values than the target
+# server expecting. When overwriting a value, the key must be specified in order to identify the right
+# header. If only the ok and nk are specified, the router will rewrite the header key ok with different
+# key nk and keep the value.
+# The format of the rule will be a map with the path as the key. Please refer to test values.yml for
+# examples.
+headerRewriteRules:
+  # rewrite header key business-query to request-query and value value1 to value2 for /v1/address
+  /v2/address:
+    - oldK: business-query
+      # overwrite the key
+      newK: request-query
+      oldV: value1
+      # overwrite the value at the same time.
+      newV: value2
+    - oldK: module
+      newK: mod
+    - oldK: app-id
+      oldV: esb
+      newV: emb
