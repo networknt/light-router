@@ -1,5 +1,16 @@
 # Change Log
 
+## [2.1.1](https://github.com/networknt/light-router/tree/2.1.1) (2022-04-26)
+
+
+**Merged pull requests:**
+
+
+- fixes \#150 update the light-gateway to add more properties to the lim… [\#151](https://github.com/networknt/light-router/pull/151) ([stevehu](https://github.com/stevehu))
+- fixes \#148 update the configuration for template and config folder [\#149](https://github.com/networknt/light-router/pull/149) ([stevehu](https://github.com/stevehu))
+- fixes \#146 update the default client.yml with multiple auth servers s… [\#147](https://github.com/networknt/light-router/pull/147) ([stevehu](https://github.com/stevehu))
+- fixes \#144 add a new test case to ensure that url rewrite works for q… [\#145](https://github.com/networknt/light-router/pull/145) ([stevehu](https://github.com/stevehu))
+- fixes \#142 add test case for method rewrite [\#143](https://github.com/networknt/light-router/pull/143) ([stevehu](https://github.com/stevehu))
 ## [2.1.0](https://github.com/networknt/light-router/tree/2.1.0) (2022-02-28)
 
 
