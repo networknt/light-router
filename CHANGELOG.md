@@ -11,6 +11,8 @@
 - fixes \#146 update the default client.yml with multiple auth servers s… [\#147](https://github.com/networknt/light-router/pull/147) ([stevehu](https://github.com/stevehu))
 - fixes \#144 add a new test case to ensure that url rewrite works for q… [\#145](https://github.com/networknt/light-router/pull/145) ([stevehu](https://github.com/stevehu))
 - fixes \#142 add test case for method rewrite [\#143](https://github.com/networknt/light-router/pull/143) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.0](https://github.com/networknt/light-router/tree/2.1.0) (2022-02-28)
 
 
