@@ -30,8 +30,7 @@ import io.undertow.client.ClientRequest;
 import io.undertow.client.ClientResponse;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import io.undertow.util.Headers;
-import io.undertow.util.Methods;
+import io.undertow.util.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,6 +49,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -89,8 +89,16 @@ public class RouterHttpTest {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
                             Map<String, Deque<String>> params = exchange.getQueryParameters();
+                            System.out.println("Query Parameters:");
                             for(Map.Entry<String, Deque<String>> param : params.entrySet()) {
                                 System.out.println(param.getKey() + " -> " + param.getValue().getFirst());
+                            }
+                            HeaderMap headerMap = exchange.getRequestHeaders();
+                            System.out.println("Headers:");
+                            Iterator<HeaderValues> it = headerMap.iterator();
+                            while(it.hasNext()) {
+                                HeaderValues values = it.next();
+                                System.out.println(values.getHeaderName() + " -> " + values.getFirst());
                             }
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server1");
@@ -111,8 +119,16 @@ public class RouterHttpTest {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
                             Map<String, Deque<String>> params = exchange.getQueryParameters();
+                            System.out.println("Query Parameters:");
                             for(Map.Entry<String, Deque<String>> param : params.entrySet()) {
                                 System.out.println(param.getKey() + " -> " + param.getValue().getFirst());
+                            }
+                            HeaderMap headerMap = exchange.getRequestHeaders();
+                            System.out.println("Headers:");
+                            Iterator<HeaderValues> it = headerMap.iterator();
+                            while(it.hasNext()) {
+                                HeaderValues values = it.next();
+                                System.out.println(values.getHeaderName() + " -> " + values.getFirst());
                             }
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server2");
@@ -134,8 +150,16 @@ public class RouterHttpTest {
                         @Override
                         public void handleRequest(HttpServerExchange exchange) throws Exception {
                             Map<String, Deque<String>> params = exchange.getQueryParameters();
+                            System.out.println("Query Parameters:");
                             for(Map.Entry<String, Deque<String>> param : params.entrySet()) {
                                 System.out.println(param.getKey() + " -> " + param.getValue().getFirst());
+                            }
+                            HeaderMap headerMap = exchange.getRequestHeaders();
+                            System.out.println("Headers:");
+                            Iterator<HeaderValues> it = headerMap.iterator();
+                            while(it.hasNext()) {
+                                HeaderValues values = it.next();
+                                System.out.println(values.getHeaderName() + " -> " + values.getFirst());
                             }
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
                             exchange.getResponseSender().send("Server3");
@@ -404,6 +428,87 @@ public class RouterHttpTest {
             Assertions.assertTrue(body.contains("Server"));
         }
     }
+
+    /**
+     * Calling server1 /v1/address with the query parameter business-request/value2, module and app-id. After the query parameter
+     * rewrite, we are expecting the new key is request-query and value is value2. module is changed to mod and app-id value is
+     * changed from esb to emb. This is the test case that we are changing both key and value, change key only and change value only.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testQueryParamsRewrite() throws Exception {
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        try {
+            ClientRequest request = new ClientRequest().setPath("/v2/address?business-query=value1&module=http-sidecar&app-id=esb").setMethod(Methods.GET);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
+            request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "com.networknt.test-1.0.0");
+            connection.sendRequest(request, client.createClientCallback(reference, latch));
+            latch.await();
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        int statusCode = reference.get().getResponseCode();
+        String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
+        Assertions.assertEquals(200, statusCode);
+        if (statusCode == 200) {
+            Assertions.assertTrue(body.contains("Server"));
+        }
+    }
+
+    /**
+     * Calling server1 /v1/address with the headers business-request/value2, module and app-id. After the header
+     * rewrite, we are expecting the new key is request-query and value is value2. module is changed to mod. app-id
+     * value is changed from esb to emb. This is the test case that we are changing both key and value, change key
+     * only and change value only.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testHeaderRewrite() throws Exception {
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(url), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.create(UndertowOptions.ENABLE_HTTP2, true)).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        try {
+            ClientRequest request = new ClientRequest().setPath("/v2/address").setMethod(Methods.GET);
+            request.getRequestHeaders().put(Headers.HOST, "localhost");
+            request.getRequestHeaders().put(new HttpString("business-query"), "value1");
+            request.getRequestHeaders().put(new HttpString("module"), "http-sidecar");
+            request.getRequestHeaders().put(new HttpString("app-id"), "esb");
+            request.getRequestHeaders().put(HttpStringConstants.SERVICE_ID, "com.networknt.test-1.0.0");
+            connection.sendRequest(request, client.createClientCallback(reference, latch));
+            latch.await();
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        int statusCode = reference.get().getResponseCode();
+        String body = reference.get().getAttachment(Http2Client.RESPONSE_BODY);
+        Assertions.assertEquals(200, statusCode);
+        if (statusCode == 200) {
+            Assertions.assertTrue(body.contains("Server"));
+        }
+    }
+
 
     private static SSLContext createSSLContext() throws RuntimeException {
         try {
