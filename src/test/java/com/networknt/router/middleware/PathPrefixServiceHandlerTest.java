@@ -113,7 +113,12 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
 
         Map<String, String> result = new HashMap<>();
         for (String path : expected.keySet()) {
-            result.put(path, HandlerUtils.findServiceId(HandlerUtils.normalisePath(path), PathPrefixServiceHandler.mapping));
+            String[] serviceEntry = HandlerUtils.findServiceEntry(HandlerUtils.normalisePath(path), PathPrefixServiceConfig.load().getMapping());
+            if(serviceEntry != null) {
+                result.put(path, serviceEntry[1]);
+            } else {
+                result.put(path, null);
+            }
         }
 
         Assertions.assertEquals(expected, result);
