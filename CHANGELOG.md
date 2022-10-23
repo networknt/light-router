@@ -1,6 +1,6 @@
 # Change Log
 
-## [2.1.2](https://github.com/networknt/light-router/tree/2.1.2) (2022-10-22)
+## [2.1.2](https://github.com/networknt/light-router/tree/2.1.2) (2022-10-23)
 
 
 **Merged pull requests:**
@@ -10,6 +10,8 @@
 - fixes \#157 remove the openapi-inject to use the default one from the … [\#158](https://github.com/networknt/light-router/pull/158) ([stevehu](https://github.com/stevehu))
 - fixes \#152 add test cases for query parameters and headers rewrite [\#153](https://github.com/networknt/light-router/pull/153) ([stevehu](https://github.com/stevehu))
 - Issue155 [\#156](https://github.com/networknt/light-router/pull/156) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.1](https://github.com/networknt/light-router/tree/2.1.1) (2022-04-26)
 
 
