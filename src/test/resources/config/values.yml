@@ -1,38 +1,14 @@
----
-# Light Router Configuration
-# As this router is built to support discovery and security for light-4j services,
-# the outbound connection is always HTTP 2.0 with TLS enabled.
-
-# If HTTP 2.0 protocol will be accepted from incoming request.
-http2Enabled: true
-
-# If TLS is enabled when accepting incoming request. Should be true on test and prod.
-httpsEnabled: true
-
-# Max request time in milliseconds before timeout to the server.
-maxRequestTime: 1000
-
-# Rewrite Host Header with the target host and port and write X_FORWARDED_HOST with original host
-rewriteHostHeader: true
-
-# Reuse XForwarded for the target XForwarded header
-reuseXForwarded: false
-
-# Max Connection Retries
-maxConnectionRetries: 3
-
-
 # support serviceId in the query parameter for routing to overwrite serviceId in header routing.
 # by default, it is false and shouldn't be used unless you are dealing with a legacy client that
 # doesn't support header manipulation. Once this flag is true, we are going to overwrite the header
 # service_id derived with other handlers from prefix, path, endpoint etc.
-serviceIdQueryParameter: ${router.serviceIdQueryParameter:true}
+router.serviceIdQueryParameter: true
 
 # URL rewrite rules, each line will have two parts: the regex patten and replace string separated
 # with a space. The light-router has service discovery for host routing, so whe working on the
 # url rewrite rules, we only need to create about the path in the URL.
 # Test your rules at https://www.freeformatter.com/java-regex-tester.html#ad-output
-urlRewriteRules:
+router.urlRewriteRules:
   # test your regex rule at https://www.freeformatter.com/java-regex-tester.html#ad-output
   # /listings/123 to /listing.html?listing=123
   - /listings/(.*)$ /listing.html?listing=$1
@@ -49,7 +25,7 @@ urlRewriteRules:
 # The format of the rule will be "path source-method target-method". Please refer to test values.yml for
 # examples.
 # Note: you cannot rewrite a method with a body to a method without a body or vice versa.
-methodRewriteRules:
+router.methodRewriteRules:
   - /v2/address DELETE GET
 
 # Query parameter rewrite rules for client applications that send different query parameter keys or values
@@ -58,7 +34,7 @@ methodRewriteRules:
 # query parameter key ok with different key nk and keep the value.
 # The format of the rule will be a map with the path as the key. Please refer to test values.yml for
 # examples.
-queryParamRewriteRules:
+router.queryParamRewriteRules:
   # rewrite query parameter key business-query to request-query and value value1 to value2 for /v1/address
   /v2/address:
     - oldK: business-query
@@ -79,7 +55,7 @@ queryParamRewriteRules:
 # key nk and keep the value.
 # The format of the rule will be a map with the path as the key. Please refer to test values.yml for
 # examples.
-headerRewriteRules:
+router.headerRewriteRules:
   # rewrite header key business-query to request-query and value value1 to value2 for /v1/address
   /v2/address:
     - oldK: business-query
