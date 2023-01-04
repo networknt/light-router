@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.5](https://github.com/networknt/light-router/tree/2.1.5) (2023-01-04)
+
+
+**Merged pull requests:**
+
+
+- fixes \#164 remove the router.yml and move the config to the values.ym… [\#165](https://github.com/networknt/light-router/pull/165) ([stevehu](https://github.com/stevehu))
 ## [2.1.4](https://github.com/networknt/light-router/tree/2.1.4) (2022-11-30)
 
 
