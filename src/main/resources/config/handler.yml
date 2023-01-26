@@ -125,6 +125,10 @@ paths:
     method: 'PATCH'
     exec:
       - default
+  - path: '/*'
+    method: 'OPTIONS'
+    exec:
+      - default
   # In most case, the /server/info endpoint shouldn't be exposed. If it is, then it must be protected by OAuth 2.0
   - path: '/server/info'
     method: 'get'
