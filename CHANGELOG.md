@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.6](https://github.com/networknt/light-router/tree/2.1.6) (2023-02-06)
+
+
+**Merged pull requests:**
+
+
+- fixes \#166 add OPTIONS method to the handler.yml for cors peflight [\#167](https://github.com/networknt/light-router/pull/167) ([stevehu](https://github.com/stevehu))
 ## [2.1.5](https://github.com/networknt/light-router/tree/2.1.5) (2023-01-04)
 
 
