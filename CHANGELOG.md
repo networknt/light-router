@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.7](https://github.com/networknt/light-router/tree/2.1.7) (2023-02-14)
+
+
+**Merged pull requests:**
+
+
+- fixes \#168 upgrade google api client version [\#169](https://github.com/networknt/light-router/pull/169) ([stevehu](https://github.com/stevehu))
 ## [2.1.6](https://github.com/networknt/light-router/tree/2.1.6) (2023-02-06)
 
 
