@@ -153,7 +153,6 @@ public class LoadBalancingRouterProxyClient implements ProxyClient {
     public synchronized void addHosts(final String serviceId, final String envTag) {
         String key = serviceId + envTag;
         List<URI> uris = cluster.services(ssl == null ? "http" : "https", serviceId, envTag);
-        hosts.remove(key);
         Host[] newHosts = new Host[uris.size()];
         for (int i = 0; i < uris.size(); i++) {
             Host h = new Host(serviceId, bindAddress, uris.get(i), ssl, options);
