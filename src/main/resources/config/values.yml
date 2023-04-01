@@ -1,7 +1,5 @@
 # service.yml
 service.singletons:
-  - com.networknt.utility.Decryptor:
-      - com.networknt.decrypt.AESDecryptor
   - com.networknt.balance.LoadBalance:
       - com.networknt.balance.RoundRobinLoadBalance
   - com.networknt.cluster.Cluster:
