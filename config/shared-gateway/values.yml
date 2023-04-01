@@ -25,8 +25,6 @@ service.singletons:
       - com.networknt.balance.RoundRobinLoadBalance
   - com.networknt.cluster.Cluster:
       - com.networknt.cluster.LightCluster
-  - com.networknt.utility.Decryptor:
-      - com.networknt.decrypt.AESDecryptor
 
 # pathPrefixService.yml
 pathPrefixService.enabled: true
