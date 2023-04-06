@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.10](https://github.com/networknt/light-router/tree/2.1.10) (2023-04-06)
+
+
+**Merged pull requests:**
+
+
+- fixes \#171 remove reference to AESDecryptor [\#172](https://github.com/networknt/light-router/pull/172) ([stevehu](https://github.com/stevehu))
 ## [2.1.9](https://github.com/networknt/light-router/tree/2.1.9) (2023-03-31)
 
 
