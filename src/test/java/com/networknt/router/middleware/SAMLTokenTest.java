@@ -69,7 +69,7 @@ public class SAMLTokenTest {
     static Undertow server3 = null;
 
     public static TestServer server = TestServer.getInstance();
-    public static ServerConfig config = (ServerConfig) Config.getInstance().getJsonObjectConfig(CONFIG_NAME, ServerConfig.class);
+    public static ServerConfig config = ServerConfig.getInstance();
     public static Map<String, Object> secret = DecryptUtil.decryptMap(Config.getInstance().getJsonMapConfig(CONFIG_SECRET));
     static SSLContext sslContext = createSSLContext();
 
