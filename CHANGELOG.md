@@ -8,6 +8,8 @@
 
 - fixes \#175 refactor based on the ServerConfig change [\#176](https://github.com/networknt/light-router/pull/176) ([stevehu](https://github.com/stevehu))
 - fixes \#173 add addDefaultImplementationEntries to maven jar plugin [\#174](https://github.com/networknt/light-router/pull/174) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.28](https://github.com/networknt/light-router/tree/2.1.28) (2023-10-24)
 
 
