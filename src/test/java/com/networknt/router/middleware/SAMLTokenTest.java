@@ -61,7 +61,6 @@ import static com.networknt.server.Server.TRUST_ALL_CERTS;
 @ExtendWith(TestServer.class)
 public class SAMLTokenTest {
     static final Logger logger = LoggerFactory.getLogger(SAMLTokenTest.class);
-    public static final String CONFIG_NAME = "server";
     public static final String CONFIG_SECRET = "secret";
 
     static Undertow server1 = null;
