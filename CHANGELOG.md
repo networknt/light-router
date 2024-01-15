@@ -1,12 +1,20 @@
 # Change Log
 
-## [2.1.30](https://github.com/networknt/light-router/tree/2.1.30) (2023-11-20)
+## [2.1.31](https://github.com/networknt/light-router/tree/2.1.31) (2024-01-15)
+
+
+**Merged pull requests:**
+
+
+## [2.1.30](https://github.com/networknt/light-router/tree/2.1.30) (2023-11-21)
 
 
 **Merged pull requests:**
 
 
 - fixes \#177 refactor ServerConfig [\#178](https://github.com/networknt/light-router/pull/178) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.29](https://github.com/networknt/light-router/tree/2.1.29) (2023-11-19)
 
 
