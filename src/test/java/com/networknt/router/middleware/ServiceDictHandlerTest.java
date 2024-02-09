@@ -44,7 +44,7 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
             server.start();
         }
     }
-    
+
     @AfterAll
     public static void tearDown() throws Exception {
         if(server != null) {
@@ -57,7 +57,7 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
             logger.info("The server is stopped.");
         }
     }
-    
+
     static RoutingHandler getTestHandler() {
         return Handlers.routing()
                 .add(Methods.GET, "/v1/address/{id}", exchange -> {
@@ -81,7 +81,7 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
     public void testFindServiceId() throws Exception {
         // Make test parametric when porting to junit5?
         Map<AbstractMap.SimpleEntry<String, String>, String> expected = new HashMap<>();
-        
+
         // Simple calls
         expected.put(createPair("/v1/address/111", "get"), "party.address-1.0.0");
         expected.put(createPair("/v1/address/whatever", "get"), "party.address-1.0.0");
@@ -107,12 +107,12 @@ public class ServiceDictHandlerTest extends BaseServiceHandlerTest {
         }
 
         Assertions.assertEquals(expected, result);
-    }    
-    
+    }
+
     private AbstractMap.SimpleEntry<String, String> createPair(String path, String method){
     	return new AbstractMap.SimpleEntry<>(path, method);
     }
-    
+
     private String toKey(AbstractMap.SimpleEntry<String, String> pair) {
     	return HandlerUtils.toInternalKey(pair.getValue(), pair.getKey());
     }

@@ -50,7 +50,7 @@ java -jar target/petstore-service-api-3.0.1.jar
 
 ```
 
-The petstore light-api will start on local https 8443 port. 
+The petstore light-api will start on local https 8443 port.
 
 verify by access the service directly on https://localhost:8443/
 
@@ -90,4 +90,3 @@ curl --location --request GET 'https://localhost:9443/v1/pets' \
 --data-raw '{"accountId":1,"transactioType":"DEPOSIT","amount":20}'
 
 ```
- 

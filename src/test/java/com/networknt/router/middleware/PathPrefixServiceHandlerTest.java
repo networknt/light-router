@@ -59,7 +59,7 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
             server.start();
         }
     }
-    
+
     @AfterAll
     public static void tearDown() throws Exception {
         if(server != null) {
@@ -72,7 +72,7 @@ public class PathPrefixServiceHandlerTest extends BaseServiceHandlerTest{
             logger.info("The server is stopped.");
         }
     }
-    
+
     static RoutingHandler getTestHandler() {
         return Handlers.routing()
                 .add(Methods.GET, "/v1/address/{id}", exchange -> {
