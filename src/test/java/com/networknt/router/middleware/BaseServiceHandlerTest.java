@@ -198,5 +198,5 @@ public class BaseServiceHandlerTest {
         Assertions.assertEquals("OK", body);
         Assertions.assertEquals("party.address-2.0.0", serviceId);
         Assertions.assertEquals("dev", envTag);
-    }    
+    }
 }

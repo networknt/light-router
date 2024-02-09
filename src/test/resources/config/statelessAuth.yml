@@ -16,4 +16,3 @@ cookieDomain: localhost
 cookiePath: /
 # Cookie secured
 cookieSecure: false
-

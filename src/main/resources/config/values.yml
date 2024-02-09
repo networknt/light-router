@@ -17,4 +17,3 @@ server.serviceId: com.networknt.router-1.0.0
 router.hostWhitelist:
   - 192.168.0.*
   - localhost
-
