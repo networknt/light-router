@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.1.32](https://github.com/networknt/light-router/tree/2.1.32) (2024-02-27)
+
+
+**Merged pull requests:**
+
+
+- [pre-commit.ci] pre-commit autoupdate [\#184](https://github.com/networknt/light-router/pull/184) ([pre-commit-ci](https://github.com/apps/pre-commit-ci))
+- fixes \#182 add pre-commit hook and apply it [\#183](https://github.com/networknt/light-router/pull/183) ([stevehu](https://github.com/stevehu))
+- fixes \#180 update test cases based on the HandlerUtils package change [\#181](https://github.com/networknt/light-router/pull/181) ([stevehu](https://github.com/stevehu))
 ## [2.1.31](https://github.com/networknt/light-router/tree/2.1.31) (2024-01-16)
 
 
