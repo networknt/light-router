@@ -1,5 +1,7 @@
 # light-router
 
+Deprecated: It is replaced by the light-gateway with light-router and light-proxy features.
+
 A client-side service mesh router designed for the legacy system that cannot leverage the light-4j client module
 
 [Stack Overflow](https://stackoverflow.com/questions/tagged/light-4j) |
