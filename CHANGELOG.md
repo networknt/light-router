@@ -8,6 +8,8 @@
 
 - fixes \#189 update package for HandlerUtils after refactoring [\#190](https://github.com/networknt/light-router/pull/190) ([stevehu](https://github.com/stevehu))
 - [pre-commit.ci] pre-commit autoupdate [\#188](https://github.com/networknt/light-router/pull/188) ([pre-commit-ci](https://github.com/apps/pre-commit-ci))
+
+
 ## [2.1.33](https://github.com/networknt/light-router/tree/2.1.33) (2024-03-31)
 
 
