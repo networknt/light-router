@@ -1,2 +1,0 @@
-enabled: ${token.enabled:false}
-scopeToken: true
