@@ -7,6 +7,8 @@
 
 
 - fixes \#191 remove externalized config files from src resource config [\#192](https://github.com/networknt/light-router/pull/192) ([stevehu](https://github.com/stevehu))
+
+
 ## [2.1.34](https://github.com/networknt/light-router/tree/2.1.34) (2024-06-22)
 
 
