@@ -238,11 +238,6 @@
             <version>${version.light-4j}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
-            <version>${version.google-api}</version>
-        </dependency>
-        <dependency>
             <groupId>com.restfb</groupId>
             <artifactId>restfb</artifactId>
             <version>${version.facebook}</version>
